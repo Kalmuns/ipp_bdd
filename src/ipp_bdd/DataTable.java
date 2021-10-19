@@ -1,21 +1,23 @@
 package ipp_bdd;
 
 import java.beans.IndexedPropertyChangeEvent;
+import java.nio.Buffer;
 import java.security.DrbgParameters.Reseed;
 import java.util.ArrayList;
 
 import javax.sql.rowset.Joinable;
 
 public class DataTable {
-	//   private boolean type;
-	//	 private ArrayList<Object> row;
+	 protected boolean type;
+	 protected ArrayList<Object> row;
 	 protected ArrayList<Object> column;
 	 protected ArrayList<String> columnName;
 	 protected String tableName;
 	 public DataTable() {
 		// TODO Auto-generated constructor stub
-		column= new ArrayList<>();
-		columnName= new ArrayList<>();
+		  row=new ArrayList<Object>();
+		  column= new ArrayList<Object>();
+		  columnName=new ArrayList<String>() ;
 	}
 	
 	 public DataTable( ArrayList<Object> column_buffer,ArrayList<String> columnName_buffer){
@@ -91,7 +93,19 @@ public class DataTable {
 	 }
 	 
 	 
-	 public void load(ArrayList<String> filenameStrings) {
+	 public void load(ArrayList<String> filenameStrings, boolean type_buffer) {
+		 type=type_buffer;
+		 if (type_buffer)// Si column database
+		 {
+			 
+		 }
+		 else {// si row database ( filename est censé être de taille 1)
+			
+			 ArrayList<Object> rowbuffer= new ArrayList<Object>();
+			 rowbuffer.add(new Integer(5));
+			 rowbuffer.add(new String("blabl"));
+			 row.add(rowbuffer);
+		}
 		 // une fois instance Database déclaré 
 		 // Une arraylist objet dans column 
 		 // le nom du fichier ( ou une partie du nom ) nom de la colonne 

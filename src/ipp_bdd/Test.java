@@ -16,6 +16,9 @@ public class Test extends DataTable{
 	column.add(strings);
 	columnName=strings;
 	
+	Object objects[];
+	int x=5;
+	objects=new Object[x];
 	System.out.println("column"+column.get(0));
 		// TODO Auto-generated constructor stub
 	}
