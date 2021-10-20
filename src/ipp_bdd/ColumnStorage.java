@@ -15,7 +15,7 @@ public class ColumnStorage {
 		assert batchSize <= nbRows;
 		String current_line;
 		String ext = ".tbl";
-		String file_path = srcFile.concat(filenameString).concat(ext);
+		String file_path = srcFile + filenameString + ext;
 		String[] current_line_split;
 		// Writing variables
 		int fileNumber = 0;
@@ -29,9 +29,8 @@ public class ColumnStorage {
 			while ((current_line = br.readLine()) != null) {
 				if (writingRowFile == 0) {
 					for (int column_index = 0; column_index < columnNames.size(); column_index++) {
-						String str = columnsPath.concat(filenameString).concat("_")
-								.concat(columnNames.get(column_index)).concat("_").concat(String.valueOf(fileNumber))
-								.concat(ext);
+						String str = columnsPath + filenameString + "_" + columnNames.get(column_index) + "_"
+								+ String.valueOf(fileNumber) + ext;
 						File file = new File(str);
 						file.createNewFile();
 					}
@@ -42,12 +41,11 @@ public class ColumnStorage {
 				}
 				if (writingRowBatch == batchSize - 1) {
 					for (int column_index = 0; column_index < columnNames.size(); column_index++) {
-						String str = columnsPath.concat(filenameString).concat("_")
-								.concat(columnNames.get(column_index)).concat("_").concat(String.valueOf(fileNumber))
-								.concat(ext);
+						String str = columnsPath + filenameString + "_" + columnNames.get(column_index) + "_"
+								+ String.valueOf(fileNumber) + ext;
 						FileWriter writer = new FileWriter(str, true);
 						for (int row = 0; row <= writingRowBatch; row++) {
-							writer.write(batch[row][column_index].concat("\n"));
+							writer.write(batch[row][column_index] + "\n");
 						}
 						writer.close();
 					}
@@ -59,12 +57,11 @@ public class ColumnStorage {
 					}
 				} else if (writingRowBatch != batchSize - 1 && writingRowFile == nbRows - 1) {
 					for (int column_index = 0; column_index < columnNames.size(); column_index++) {
-						String str = columnsPath.concat(filenameString).concat("_")
-								.concat(columnNames.get(column_index)).concat("_").concat(String.valueOf(fileNumber))
-								.concat(ext);
+						String str = columnsPath + filenameString + "_" + columnNames.get(column_index) + "_"
+								+ String.valueOf(fileNumber) + ext;
 						FileWriter writer = new FileWriter(str, true);
 						for (int row = 0; row <= writingRowBatch; row++) {
-							writer.write(batch[row][column_index].concat("\n"));
+							writer.write(batch[row][column_index] + "\n");
 						}
 						writer.close();
 					}
@@ -83,11 +80,11 @@ public class ColumnStorage {
 				br.close();
 			if (writingRowBatch > 0) {
 				for (int column_index = 0; column_index < columnNames.size(); column_index++) {
-					String str = columnsPath.concat(filenameString).concat("_").concat(columnNames.get(column_index))
-							.concat("_").concat(String.valueOf(fileNumber)).concat(ext);
+					String str = columnsPath + filenameString + "_" + columnNames.get(column_index) + "_"
+							+ String.valueOf(fileNumber) + ext;
 					FileWriter writer = new FileWriter(str, true);
 					for (int row = 0; row <= writingRowBatch; row++) {
-						writer.write(batch[row][column_index].concat("\n"));
+						writer.write(batch[row][column_index] + "\n");
 					}
 					writer.close();
 				}
@@ -99,18 +96,37 @@ public class ColumnStorage {
 
 	public static void main(String[] args) {
 		String srcFile = "50Mo/";
-		String filenameString = "part";
 		String columnsPath = "50MoColumns/";
-		String[] arrayColumnNames = new String[] { "PARTKEY", "NAME", "MFGR", "BRAND", "TYPE", "SIZE", "CONTAINER",
+		int nbTables = 8;
+		String[] filenameStrings = new String[] { "customer", "lineitem", "nation", "orders", "part", "partsupp",
+				"region", "supplier" };
+		int[] nbColumns = new int[] { 8, 16, 4, 9, 9, 5, 3, 7 };
+		String[] customerColumns = new String[] { "CUSTKEY", "NAME", "ADDRESS", "NATIONKEY", "PHONE", "ACCTBAL",
+				"MKTSEGMENT", "COMMENT" };
+		String[] lineitemColumns = new String[] { "ORDERKEY", "PARTKEY", "SUPPKEY", "LINENUMBER", "QUANTITY",
+				"EXTENDEDPRICE", "DISCOUNT", "TAX", "RETURNFLAG", "LINESTATUS", "SHIPDATE", "COMMIDATE", "RECEIPTDATE",
+				"SHIPINSTRUCT", "SHIPMODE", "COMMENT" };
+		String[] nationColumns = new String[] { "NATIONKEY", "NAME", "REGIONKEY", "COMMENT" };
+		String[] ordersColumns = new String[] { "ORDERKEY", "CUSTKEY", "ORDERSTATUS", "TOTALPRICE", "ORDERDATE",
+				"ORDERPRIORITY", "CLERK", "SHIPPRIORITY", "COMMENT" };
+		String[] partColumns = new String[] { "PARTKEY", "NAME", "MFGR", "BRAND", "TYPE", "SIZE", "CONTAINER",
 				"RETAILPRICE", "COMMENT" };
-		int nbColumns = 9;
-		ArrayList<String> columnNames = new ArrayList<String>(nbColumns);
-		for (int i = 0; i < nbColumns; i++) {
-			columnNames.add(arrayColumnNames[i]);
+		String[] partsuppColumns = new String[] { "PARTKEY", "SUPPKEY", "AVAILQTY", "SUPPLYCOST", "COMMENT" };
+		String[] regionColumns = new String[] { "REGIONKEY", "NAME", "COMMENT" };
+		String[] supplierColumns = new String[] { "SUPPLEY", "NAME", "ADDRESS", "NATIONKEY", "PHONE", "ACCTBAL",
+				"COMMENT" };
+		String[][] arrayColumnNames = new String[][] { customerColumns, lineitemColumns, nationColumns, ordersColumns,
+				partColumns, partsuppColumns, regionColumns, supplierColumns };
+
+		for (int i = 0; i < nbTables; i++) {
+			ArrayList<String> columnNames = new ArrayList<String>(nbColumns[i]);
+			for (int j = 0; j < nbColumns[i]; j++) {
+				columnNames.add(arrayColumnNames[i][j]);
+			}
+			int nbRows = 1000;
+			int batchSize = 100;
+			to_columns(srcFile, filenameStrings[i], columnsPath, columnNames, nbRows, batchSize);
 		}
-		int nbRows = 1000;
-		int batchSize = 100;
-		to_columns(srcFile, filenameString, columnsPath, columnNames, nbRows, batchSize);
 	}
 
 }
