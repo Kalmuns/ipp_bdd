@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class ColumnStorage {
 
-	public static void to_columns(String srcFile, String filenameString, String columnsPath,
+	public static void to_columns(String srcFile, String filenameString, String filenameShortcut, String columnsPath,
 			ArrayList<String> columnNames, int nbRows, int batchSize) {
 		// Reading variables
 		assert batchSize <= nbRows;
@@ -29,7 +29,7 @@ public class ColumnStorage {
 			while ((current_line = br.readLine()) != null) {
 				if (writingRowFile == 0) {
 					for (int column_index = 0; column_index < columnNames.size(); column_index++) {
-						String str = columnsPath + filenameString + "_" + columnNames.get(column_index) + "_"
+						String str = columnsPath + filenameShortcut + "_" + columnNames.get(column_index) + "_"
 								+ String.valueOf(fileNumber) + ext;
 						File file = new File(str);
 						file.createNewFile();
@@ -41,7 +41,7 @@ public class ColumnStorage {
 				}
 				if (writingRowBatch == batchSize - 1) {
 					for (int column_index = 0; column_index < columnNames.size(); column_index++) {
-						String str = columnsPath + filenameString + "_" + columnNames.get(column_index) + "_"
+						String str = columnsPath + filenameShortcut + "_" + columnNames.get(column_index) + "_"
 								+ String.valueOf(fileNumber) + ext;
 						FileWriter writer = new FileWriter(str, true);
 						for (int row = 0; row <= writingRowBatch; row++) {
@@ -57,7 +57,7 @@ public class ColumnStorage {
 					}
 				} else if (writingRowBatch != batchSize - 1 && writingRowFile == nbRows - 1) {
 					for (int column_index = 0; column_index < columnNames.size(); column_index++) {
-						String str = columnsPath + filenameString + "_" + columnNames.get(column_index) + "_"
+						String str = columnsPath + filenameShortcut + "_" + columnNames.get(column_index) + "_"
 								+ String.valueOf(fileNumber) + ext;
 						FileWriter writer = new FileWriter(str, true);
 						for (int row = 0; row <= writingRowBatch; row++) {
@@ -80,7 +80,7 @@ public class ColumnStorage {
 				br.close();
 			if (writingRowBatch > 0) {
 				for (int column_index = 0; column_index < columnNames.size(); column_index++) {
-					String str = columnsPath + filenameString + "_" + columnNames.get(column_index) + "_"
+					String str = columnsPath + filenameShortcut + "_" + columnNames.get(column_index) + "_"
 							+ String.valueOf(fileNumber) + ext;
 					FileWriter writer = new FileWriter(str, true);
 					for (int row = 0; row <= writingRowBatch; row++) {
@@ -100,6 +100,7 @@ public class ColumnStorage {
 		int nbTables = 8;
 		String[] filenameStrings = new String[] { "customer", "lineitem", "nation", "orders", "part", "partsupp",
 				"region", "supplier" };
+		String[] filenameShortcuts = new String[] {"C", "L", "N", "O", "P", "PS", "R", "S"};
 		int[] nbColumns = new int[] { 8, 16, 4, 9, 9, 5, 3, 7 };
 		String[] customerColumns = new String[] { "CUSTKEY", "NAME", "ADDRESS", "NATIONKEY", "PHONE", "ACCTBAL",
 				"MKTSEGMENT", "COMMENT" };
@@ -125,7 +126,7 @@ public class ColumnStorage {
 			}
 			int nbRows = 1000;
 			int batchSize = 100;
-			to_columns(srcFile, filenameStrings[i], columnsPath, columnNames, nbRows, batchSize);
+			to_columns(srcFile, filenameStrings[i], filenameShortcuts[i], columnsPath, columnNames, nbRows, batchSize);
 		}
 	}
 
