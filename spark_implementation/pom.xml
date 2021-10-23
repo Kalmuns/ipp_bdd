@@ -61,7 +61,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>com.main.java.sfbda_project</mainClass>
+              <mainClass>com.main.java.sfbda_project.App</mainClass>
             </manifest>
           </archive>
         </configuration>
