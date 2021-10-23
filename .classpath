@@ -6,5 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="project/src/project/resources"/>
+	<classpathentry excluding="src/project/resources/" kind="src" path="project"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
