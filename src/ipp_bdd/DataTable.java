@@ -5,9 +5,12 @@ import java.nio.Buffer;
 import java.security.DrbgParameters.Reseed;
 import java.util.ArrayList;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FilePermission;
 import java.io.FileReader;
 import javax.sql.rowset.Joinable;
+import java.lang.Math.*;
+import java.lang.Thread;
 
 public class DataTable {
 	protected boolean type;
@@ -92,7 +95,47 @@ public class DataTable {
 		type = type_buffer;
 		if (type_buffer)// Si column database
 		{
-			// TODO : Columns type
+			// filenameStrings est du type ["P_BRAND", "P_COMMENT", "P_CONTAINER"]
+			int[] columnSizes = new int[filenameStrings.size()];
+			for(int colnb=0; colnb<filenameStrings.size(); colnb++) {
+				columnSizes[colnb] = 0;
+			}
+			File folder = new File(path);
+			File[] listOfFiles = folder.listFiles();
+			for(int i = 0; i<listOfFiles.length; i++) {
+				String file = listOfFiles[i].toString();
+				String[] split_file = file.split("/");
+				file = split_file[split_file.length-1];
+				String[] split_file_2 = file.split("_");
+				file = split_file_2[0]+"_"+split_file_2[1];
+				int fileNumber = Integer.parseInt(split_file_2[2].split("\\.")[0]);
+				int pos = filenameStrings.indexOf(file);
+				if(pos>-1) {
+					columnSizes[pos] = Math.max(columnSizes[pos], fileNumber);
+				}
+			}
+			ArrayList<ArrayList<String>> columnList = new ArrayList<ArrayList<String>>(filenameStrings.size());
+			for(int i=0; i<filenameStrings.size(); i++) {
+				columnList.add(new ArrayList<String>(columnSizes[i]));
+				String file = path+filenameStrings.get(i)+"_";
+				for(int j=0; j<=columnSizes[i]; j++) {
+					String final_file = file + Integer.toString(j) + ".tbl";
+					columnList.get(i).add(final_file);
+				}
+			}
+			
+			ArrayList<Thread> threads = new ArrayList<Thread>(Parameters.Max_Threads);
+			for(int i=0; i<Parameters.Max_Threads; i++) {
+				threads.add(new Thread());	
+			}
+			for(int i=0; i<columnList.size(); i++){
+				for(int j=0; j<columnList.get(i).size(); j++) {
+					int x = 0;
+					
+				}
+			}
+			
+			
 		} else {
 			assert filenameStrings.size() == 1; // si row database, filename est censé être de taille 1
 			String current_line;
@@ -125,6 +168,7 @@ public class DataTable {
 			}
 		}
 	}
+	
 
 	public void load(String string) {
 		// appel load Array list
@@ -150,6 +194,7 @@ public class DataTable {
 	}
 
 	public static void main(String[] args) {
+		/*
 		String path = "50Mo/";
 		ArrayList<String> filenameStrings = new ArrayList<String>();
 		filenameStrings.add("customer");
@@ -164,11 +209,25 @@ public class DataTable {
 		type_columns.add("string");
 		type_columns.add("string");
 		DataTable db = new DataTable();
+		*/
 		
+		// db.load(path, filenameStrings, type_buffer, type_columns);
+		//System.out.println(db.tableName);
+		//System.out.println(db.row.get(0));
+		
+		/*
+		String path = "50MoColumns/";
+		ArrayList<String> filenameStrings = new ArrayList<String>();
+		filenameStrings.add("P_BRAND");
+		filenameStrings.add("P_COMMENT");
+		boolean type_buffer = true;
+		ArrayList<String> type_columns = new ArrayList<String>();
+		DataTable db = new DataTable();
 		db.load(path, filenameStrings, type_buffer, type_columns);
-		System.out.println(db.tableName);
-		System.out.println(db.row.get(0));
-
+		*/
+		
+		
+		
 	}
 
 }
