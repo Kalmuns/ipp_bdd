@@ -6,7 +6,7 @@ public class main {
 		// TODO Auto-generated method stub
 		System.out.println("compilator_ok");
 		Test test= new Test();
-
+		Test_spark lecture = new Test_spark();
 	}
 }
 	
