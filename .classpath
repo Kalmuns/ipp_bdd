@@ -8,5 +8,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="project/src/project/resources"/>
 	<classpathentry excluding="src/project/resources/" kind="src" path="project"/>
+	<classpathentry kind="src" path="spark_implementation/src/main/java"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
