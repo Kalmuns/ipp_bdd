@@ -124,7 +124,7 @@ public class ColumnStorage {
 			for (int j = 0; j < nbColumns[i]; j++) {
 				columnNames.add(arrayColumnNames[i][j]);
 			}
-			int nbRows = 1000;
+			int nbRows = Integer.MAX_VALUE;
 			int batchSize = 100;
 			to_columns(srcFile, filenameStrings[i], filenameShortcuts[i], columnsPath, columnNames, nbRows, batchSize);
 		}
