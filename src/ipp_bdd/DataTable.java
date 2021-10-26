@@ -1,9 +1,10 @@
 package ipp_bdd;
-
 import java.beans.IndexedPropertyChangeEvent;
 import java.nio.Buffer;
 import java.security.DrbgParameters.Reseed;
+import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FilePermission;
@@ -18,7 +19,7 @@ public class DataTable {
 	protected ArrayList<Object> column;
 	protected ArrayList<String> columnName;
 	protected String tableName;
-
+	protected ArrayList<String> columnList ;
 	public DataTable() {
 		// TODO Auto-generated constructor stub
 		row = new ArrayList<Object>();
@@ -52,10 +53,26 @@ public class DataTable {
 
 	public DataTable filter() {
 		// to complete
-
+			
 		//
 		DataTable result = new DataTable();
 		return result;
+	}
+	
+	public DataTable project(ArrayList<String> column_toproject) {// Input is column name of the column we want to keep
+		for (int i=0;i< columnName.size();i++)
+		{
+			if (column_toproject.contains(columnName.get(i))) {
+				
+			}
+			else {
+				column.remove(i);
+				columnName.remove(i);
+				i--;
+			}
+		}
+		
+		return this;
 	}
 
 	public DataTable hashJoin(DataTable table_A, DataTable table_B, ArrayList<String> on_columnName, Object condition) {
@@ -63,6 +80,55 @@ public class DataTable {
 		// To Complete
 
 		//
+		return join_table;
+	}
+	// Join as we consider joining on the primary key of this table. 
+	// On the columntable1 & 2 we consider the column to keep for the result
+	// Fort both of them index 0 must be the column on wich join will be perform
+	public DataTable sortjoin(DataTable table_tojoin, ArrayList<String>  columntable1, ArrayList<String>  columntable2, Object condition) {
+		DataTable join_table = new DataTable();
+		
+		// sorton index
+	//	@SuppressWarnings
+		this.sort(columntable1.get(0));// 0 index is the name of the join column
+		table_tojoin.sort(columntable2.get(0));// "" ""
+	//	new QuickSort((ArrayList<Object>) this.column.get(this.get_column_index(table1)));
+		//
+		int leftit=0,rightit=0;// iterator of my join columns 
+		ArrayList<Object> newcolonne = new ArrayList<Object>(); // Pour les nouvelles colonones : - joincolumn - this.colonne puis colonne to join
+		//ArrayList<Object> newrow= new ArrayList<Object>();
+		ArrayList<Object> newcolumnname= new ArrayList<Object>();
+		for(int i=0;i<columntable1.size();i++) {
+			newcolumnname.add(columntable1.get(i));
+		}
+		for (int i=1;i<columntable2.size();i++){
+			newcolumnname.add(columntable2.get(i));
+		}
+		if(row.isEmpty()) {
+			int sizetablel = ((ArrayList<Object>) this.column.get(0)).size();
+			int sizetabler=table_tojoin.get_column(columntable2.get(0)).size();
+			while (leftit <  sizetablel && rightit<  sizetabler) {
+				if (this.get_column(columntable1.get(0)).get(leftit) == table_tojoin.get_column(columntable2.get(0)).get(rightit) ) {// A check
+					for (int i =0;i<columntable1.size();i++){
+						newcolonne.add(this.get_column(columntable1.get(i)).get(leftit));
+					}
+					for (int i=1;i<columntable2.size();i++) {
+						newcolonne.add(this.get_column(columntable2.get(i)).get(rightit));
+					}
+				}
+				if((Integer)this.get_column(columntable1.get(0)).get(leftit) <=(Integer) table_tojoin.get_column(columntable2.get(0)).get(rightit)){
+					leftit++;
+				}
+				else {
+					rightit++;
+				}
+				
+			}
+		}
+		else if (column.isEmpty()) {
+			// Si row join a coder ici 
+		}
+		
 		return join_table;
 	}
 
@@ -75,6 +141,13 @@ public class DataTable {
 				index.add(columnName.indexOf(name.get(i)));
 			}
 		return index;
+	}
+	protected void sort(String colonne) {
+		this.column.get(this.get_column_index(colonne));
+		
+		// Implement quicksort from https://www.youtube.com/watch?v=Fiot5yuwPAg ? 
+		// Implement for row but not other ?
+		
 	}
 
 	protected int get_column_index(String name) {
@@ -93,6 +166,7 @@ public class DataTable {
 
 	public void load(String path, ArrayList<String> filenameStrings, boolean type_buffer, ArrayList<String> type_columns) {
 		type = type_buffer;
+		//columnName=filenameStrings;
 		if (type_buffer)// Si column database
 		{
 			// filenameStrings est du type ["P_BRAND", "P_COMMENT", "P_CONTAINER"]
@@ -114,13 +188,16 @@ public class DataTable {
 					columnSizes[pos] = Math.max(columnSizes[pos], fileNumber);
 				}
 			}
-			ArrayList<ArrayList<String>> columnList = new ArrayList<ArrayList<String>>(filenameStrings.size());
+			//columnList = new ArrayList<ArrayList<String>>(filenameStrings.size());
+			columnList = new ArrayList<String>(filenameStrings.size());
+
 			for(int i=0; i<filenameStrings.size(); i++) {
-				columnList.add(new ArrayList<String>(columnSizes[i]));
+			//	columnList.add(new ArrayList<String>(columnSizes[i]));
 				String file = path+filenameStrings.get(i)+"_";
 				for(int j=0; j<=columnSizes[i]; j++) {
 					String final_file = file + Integer.toString(j) + ".tbl";
-					columnList.get(i).add(final_file);
+					//columnList.get(i).add(final_file);
+					columnList.add(final_file);
 				}
 			}
 			
@@ -128,12 +205,29 @@ public class DataTable {
 			for(int i=0; i<Parameters.Max_Threads; i++) {
 				threads.add(new Thread());	
 			}
-			for(int i=0; i<columnList.size(); i++){
-				for(int j=0; j<columnList.get(i).size(); j++) {
-					int x = 0;
-					
+			Boolean loading=false;
+			while(loading)
+			{
+				if(columnList.size() <=Parameters.Max_Threads) {
+					for(int i=0; i<columnList.size(); i++){
+//						for (int y=0;y<columnList.get(i).size();y++)
+//						threads.set(i,new Thread(Reader(columnList.get(y),this.column));
+						threads.set(i, new Thread(new Reader(columnList.get(i),this.column)));
+					}
 				}
 			}
+			
+//			for(int i=0; i<columnList.size(); i++){
+//				if(columnList.size() <=Parameters.Max_Threads) {
+//					for int y=0;y<
+//				}
+			// This is for partitionned colomne on row
+//				for(int j=0; j<columnList.get(i).size(); j++) {
+//					
+//				}
+				
+				
+			//}
 			
 			
 		} else {
@@ -224,10 +318,6 @@ public class DataTable {
 		ArrayList<String> type_columns = new ArrayList<String>();
 		DataTable db = new DataTable();
 		db.load(path, filenameStrings, type_buffer, type_columns);
-		*/
-		
-		
-		
+		*/	
 	}
-
 }
