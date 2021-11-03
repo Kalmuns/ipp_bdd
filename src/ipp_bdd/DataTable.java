@@ -282,44 +282,50 @@ public class DataTable {
 					for(int i=0; i<columnList.size(); i++){
 //						for (int y=0;y<columnList.get(i).size();y++)
 //						threads.set(i,new Thread(Reader(columnList.get(y),this.column));
+						this.column.add(new ArrayList<Object>());
+						threads.set(i, new Thread(new Reader(columnList.get(i),(ArrayList<Object>) this.column.get((this.column.size()-1)))));
+						//threads.get(i).start();
 						
-						threads.set(i, new Thread(new Reader(columnList.get(i),this.column)));
-						threads.get(i).start();
-						try {
-							for (int y=0;y<threads.size();y++) {
-								threads.get(y).join();
-							}
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					
 					}
+					for (int y=0;y<threads.size();y++) {
+						threads.get(y).run();
+					}
+					try {
+						for (int y=0;y<threads.size();y++) {
+							threads.get(y).join();
+						}
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 				loading=true;
 				}
 				else{
 					for(int i=0;i<Parameters.Max_Threads;i++)
 					{
-						threads.set(i, new Thread(new Reader(columnList.get(i),this.column)));
-						
-						
-							for (int y=0;y<threads.size();y++) {
-								try {
-									threads.get(y).join();
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-							}
-						for(int y=0;y<i;y++) {
-							columnList.remove(0);
+						this.column.add(new ArrayList<Object>());
+						threads.set(i, new Thread(new Reader(columnList.get(i),(ArrayList<Object>) this.column.get((this.column.size()-1)))));
+					}
+					for (int y=0;y<threads.size();y++) {
+						threads.get(y).run();
+					}
+					try {
+						for (int y=0;y<threads.size();y++) {
+							threads.get(y).join();
 						}
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					for(int y=0;y<Parameters.Max_Threads;y++) {
+						columnList.remove(0);
 					}
 				}
 				if(columnList.isEmpty()) {
 					loading=true;
 				}
-				
+			System.out.println("column sier"+ column.size());
 			}
 			
 			
@@ -446,6 +452,9 @@ public class DataTable {
 
 	public void print(int nrow) {
 		String ligne =  "";
+		ArrayList<Object> arrayList = (ArrayList<Object>) column.get(0);
+		int buffer=arrayList.size();
+		System.out.println("print \n size of table "+buffer );
 		for (int i=0;i<columnName.size();i++) {
 			ligne.concat(columnName.get(i));
 			ligne.concat(" / ");
@@ -455,9 +464,9 @@ public class DataTable {
 		for(i=0;i<nrow;i++){
 			ligne="";
 			for(int y=0;y<column.size();y++){
-			((ArrayList<Object>)	column.get(i)).get(y);
-				ligne.concat(((ArrayList<Object>) column.get(i)).get(y).toString());
-				ligne.concat(" / ");
+				//((ArrayList<Object>)	column.get(y)).get(i);
+				ligne=ligne.concat(((ArrayList<Object>) column.get(y)).get(i).toString());
+				ligne=ligne.concat(" / ");
 				
 			}
 			System.out.println(ligne);

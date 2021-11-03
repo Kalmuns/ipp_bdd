@@ -7,10 +7,26 @@ public class main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		ArrayList<Object> test = new ArrayList<Object>();
-		Thread thread = new Thread(new Reader("name", test));
-		System.out.println(test.get(0));
+		//System.out.println("s");
+		 DataTable table= new DataTable();
+		 ArrayList<String> wantedcolumn= new ArrayList<String>();
+		 wantedcolumn.add("P_PARTKEY");
+		 wantedcolumn.add("P_NAME");
+		 wantedcolumn.add("P_MFGR");
+		 wantedcolumn.add("P_BRAND");
+		 wantedcolumn.add("P_TYPE");
+		 wantedcolumn.add("P_SIZE");
+		 wantedcolumn.add("P_CONTAINER");
+		 wantedcolumn.add("P_RETAILPRICE");
+		 wantedcolumn.add("P_COMMENT");
+		 String path = "50MoColumns/";
 
+		boolean type_buffer = true;
+		ArrayList<String> type_columns = new ArrayList<String>();
+		DataTable db = new DataTable();
+		db.load(path, wantedcolumn, type_buffer, type_columns);
+		db.print(100);
+		System.out.println();
 	}
 }
 	
