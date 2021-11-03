@@ -13,6 +13,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FilePermission;
 import java.io.FileReader;
+
+import javax.print.attribute.Size2DSyntax;
 import javax.sql.rowset.Joinable;
 import java.lang.Math.*;
 import java.lang.Thread;
@@ -53,7 +55,7 @@ public class DataTable {
 
 	
 	
-	public DataTable filter(ArrayList<Object> object_to_compare,ArrayList<String> comparators,ArrayList<Object> reference) {
+	public DataTable filter(ArrayList<Object> object_to_compare,ArrayList<String> comparators,ArrayList<Object> reference) { // 
 		// to complete
 		ArrayList<Integer> index_to_del=new ArrayList<Integer>();	
 		ArrayList<Thread> threads = new ArrayList<Thread>(Parameters.Max_Threads);
@@ -124,6 +126,13 @@ public class DataTable {
 		return this;
 	}	
 	
+	public void invert_row(int rowa,int rowb) {
+		for (int i=0;i<column.size();i++) {
+			Object buffer= ((ArrayList<Object>) column.get(i)).get(rowa);
+			((ArrayList<Object>) column.get(i)).set(rowa,((ArrayList<Object>) column.get(i)).get(rowb));
+			((ArrayList<Object>) column.get(i)).set(rowb,buffer);
+		}
+	}
 
 	public DataTable project(ArrayList<String> column_toproject) {// Input is column name of the column we want to keep
 		// Duplicate élimination 

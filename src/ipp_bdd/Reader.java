@@ -20,7 +20,13 @@ public class Reader implements Runnable{
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(filename));
 			while ((current_line = br.readLine()) != null) {
-				this.document.add(current_line);
+				
+				if(Parameters.typeMap.get(filename.split("\\.")[0])=="int")
+					this.document.add(Integer.parseInt(current_line));
+				else if(Parameters.typeMap.get(filename.split("\\.")[0])=="float")
+					this.document.add(Float.parseFloat(current_line));
+				else if(Parameters.typeMap.get(filename.split("\\.")[0])=="string")
+					this.document.add(current_line);
 			}
 			if (br != null)
 				br.close();
