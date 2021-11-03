@@ -74,14 +74,16 @@ public class ColumnNameConstructor {
 			columnName.add("L_SHIPMODE");
 			columnName.add("L_COMMENT");
 		}
-		else if(tableString.equals("Part")) {
-			
+		else if(tableString.equals("Nation")) {
+			columnName.add("N_NATIONKEY");
+			columnName.add("N_NAME");
+			columnName.add("N_REGIONKEY");
+			columnName.add("N_COMMENT");
 		}
-		else if(tableString.equals("Part")) {
-			
-		}
-		else if(tableString.equals("Part")) {
-			
+		else if(tableString.equals("Region")) {
+			columnName.add("R_REGIONKEY");
+			columnName.add("R_NAME");
+			columnName.add("R_COMMENT");
 		}
 	}
 	

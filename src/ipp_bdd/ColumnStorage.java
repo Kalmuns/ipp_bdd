@@ -105,7 +105,7 @@ public class ColumnStorage {
 		String[] customerColumns = new String[] { "CUSTKEY", "NAME", "ADDRESS", "NATIONKEY", "PHONE", "ACCTBAL",
 				"MKTSEGMENT", "COMMENT" };
 		String[] lineitemColumns = new String[] { "ORDERKEY", "PARTKEY", "SUPPKEY", "LINENUMBER", "QUANTITY",
-				"EXTENDEDPRICE", "DISCOUNT", "TAX", "RETURNFLAG", "LINESTATUS", "SHIPDATE", "COMMIDATE", "RECEIPTDATE",
+				"EXTENDEDPRICE", "DISCOUNT", "TAX", "RETURNFLAG", "LINESTATUS", "SHIPDATE", "COMMITDATE", "RECEIPTDATE",
 				"SHIPINSTRUCT", "SHIPMODE", "COMMENT" };
 		String[] nationColumns = new String[] { "NATIONKEY", "NAME", "REGIONKEY", "COMMENT" };
 		String[] ordersColumns = new String[] { "ORDERKEY", "CUSTKEY", "ORDERSTATUS", "TOTALPRICE", "ORDERDATE",
