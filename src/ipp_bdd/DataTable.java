@@ -260,7 +260,7 @@ public class DataTable {
 			}
 			//columnList = new ArrayList<ArrayList<String>>(filenameStrings.size());
 			columnList = new ArrayList<String>(filenameStrings.size());
-
+			
 			for(int i=0; i<filenameStrings.size(); i++) {
 			//	columnList.add(new ArrayList<String>(columnSizes[i]));
 				String file = path+filenameStrings.get(i)+"_";
@@ -276,7 +276,7 @@ public class DataTable {
 				threads.add(new Thread());	
 			}
 			Boolean loading=false;
-			while(loading) // A check pas sur que ça marche 
+			while(!loading) // A check pas sur que ça marche 
 			{
 				if(columnList.size() <=Parameters.Max_Threads) {
 					for(int i=0; i<columnList.size(); i++){
@@ -367,6 +367,8 @@ public class DataTable {
 				System.out.println("File Not Found : ".concat(file_path));
 			}
 		}
+		
+		System.out.println("end of load");
 	}
 // If we implement row by row 	
 //	public void delete_row(ArrayList<Integer> to_del_index)

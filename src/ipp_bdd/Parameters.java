@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Parameters {
-	public final static int Max_Threads=5;
+	public final static int Max_Threads=2;
 	public final static boolean row=false;
 	public final static boolean column=true;
 	public final static int inttype=0;
@@ -20,8 +20,8 @@ public class Parameters {
 		typMap.put("P_BRAND_0", "string");
 		typMap.put("P_TYPE_0","string");
 		typMap.put("P_CONTAINER_0", "string");
-		typMap.put("P_RETAILPRICE", "float");
-		typMap.put("P_SIZE", "int");
+		typMap.put("P_RETAILPRICE_0", "float");
+		typMap.put("P_SIZE_0", "int");
 		typMap.put("P_COMMENT_0","string");
 		
 		
