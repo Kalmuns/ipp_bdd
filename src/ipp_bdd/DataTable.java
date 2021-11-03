@@ -77,8 +77,7 @@ public class DataTable {
 				   if(iter<comparators.size()) {
 					 threads.set(i, new Thread(new Comparator((ArrayList<Object>) object_to_compare.get(iter), comparators.get(iter), (ArrayList<Object>) reference.get(iter), booleans.get(i))))  ;
 					 threads.get(i).start();
-				   }
-				   
+				   }	   
 				   iter++;
 			   }
 				for(int i=0;i<threads.size();i++) {
@@ -236,6 +235,8 @@ public class DataTable {
 	}
 	public void load(String path, ArrayList<String> filenameStrings, boolean type_buffer, ArrayList<String> type_columns) {
 		type = type_buffer;
+		
+		columnName=filenameStrings;
 		//columnName=filenameStrings;
 		if (type_buffer)// Si column database
 		{
@@ -481,7 +482,7 @@ public class DataTable {
 
 	}
 
-	public static void main(String[] args) {
+	//public static void main(String[] args) {
 		/*
 		String path = "50Mo/";
 		ArrayList<String> filenameStrings = new ArrayList<String>();
@@ -513,5 +514,5 @@ public class DataTable {
 		DataTable db = new DataTable();
 		db.load(path, filenameStrings, type_buffer, type_columns);
 		*/	
-	}
+	//}
 }
