@@ -24,10 +24,16 @@ public class main {
 		boolean type_buffer = true;
 		ArrayList<String> type_columns = new ArrayList<String>();
 		DataTable db = new DataTable();
-		ColumnNameConstructor columnNameConstructor=new ColumnNameConstructor("Lineitem");
+		ColumnNameConstructor columnNameConstructor=new ColumnNameConstructor("Part");
 		db.load(path, columnNameConstructor.getcolmunName(), type_buffer, type_columns);
-		db.print(20);
-		System.out.println();
+		db.print(10);
+		ArrayList<Integer> to_del=new ArrayList<Integer>();
+		to_del.add(5);
+		to_del.add(6);
+		to_del.add(2);
+		
+		db.delete_row(to_del);
+		db.print(5);
 	}
 }
 	

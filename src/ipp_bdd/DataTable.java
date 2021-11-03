@@ -400,12 +400,20 @@ public class DataTable {
 		int iter=0;//iterator
 		while(!deleting_finish)// Check boucle infinie 
 		{
-			if (threads.size()<=column.size()){
-				for(int y=iter ;y<column.size(); y++) {
+			if (threads.size()>=(column.size()-iter)){
+				for(int y=0 ;y<threads.size(); y++) {
 				//	threads.set(i, null)
-					threads.set(y, new Thread(new Filtre(to_del_index, (ArrayList<Object>) column.get(y))));
-					threads.get(y).start();
+					if(iter<column.size())
+					{
+					threads.set(y, new Thread(new Filtre(to_del_index, (ArrayList<Object>) column.get(iter))));
+					}
+					iter++;
 				}
+				
+				for(int i=0;i<threads.size();i++) {
+					threads.get(i).run();
+					}
+				
 				for(int i=0;i<threads.size();i++) {
 					try {
 						threads.get(i).join();
@@ -414,23 +422,27 @@ public class DataTable {
 						e.printStackTrace();
 					}
 				}
+			
 			deleting_finish=true;
 			}
 			else {
-				for(int i=iter;i<threads.size();i++) {
+				for(int i=0;i<threads.size();i++) {
 					//	threads.set(i, null)
-						threads.set(i, new Thread(new Filtre(to_del_index, (ArrayList<Object>) column.get(i))));
-						threads.get(i).start();
+						threads.set(i, new Thread(new Filtre(to_del_index, (ArrayList<Object>) column.get(iter))));
 						iter++;
 					}
-					for(int i=0;i<threads.size();i++) {
+				
+				for(int i=0;i<threads.size();i++) {
+						threads.get(i).run();
+				}
+				for(int i=0;i<threads.size();i++) {
 						try {
 							threads.get(i).join();
-						} catch (InterruptedException e) {
+					} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-						}
 					}
+				}
 				if(iter==column.size())
 				{
 					deleting_finish=true;
