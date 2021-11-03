@@ -1,10 +1,14 @@
 package ipp_bdd;
 import java.beans.IndexedPropertyChangeEvent;
 import java.nio.Buffer;
+import java.security.DrbgParameters.NextBytes;
 import java.security.DrbgParameters.Reseed;
+import java.time.Year;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ForkJoinTask;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FilePermission;
@@ -26,19 +30,15 @@ public class DataTable {
 		column = new ArrayList<Object>();
 		columnName = new ArrayList<String>();
 	}
-
 	public DataTable(ArrayList<Object> column_buffer, ArrayList<String> columnName_buffer) {
 		column = column_buffer;
 		columnName = columnName_buffer;
-
 	}
-
 	public DataTable(ArrayList<Object> column_buffer, ArrayList<String> columnName_buffer, String tableName_buffer) {
 		column = column_buffer;
 		columnName = columnName_buffer;
 		tableName = tableName_buffer;
 	}
-
 	// Probably need A
 	public DataTable select(ArrayList<String> select_columnName) {
 		ArrayList<Object> column_buffer = new ArrayList<>();
@@ -51,18 +51,85 @@ public class DataTable {
 		return result;
 	}
 
-	public DataTable filter() {
-		// to complete
-			
-		//
-		DataTable result = new DataTable();
-		return result;
-	}
 	
+	
+	public DataTable filter(ArrayList<Object> object_to_compare,ArrayList<String> comparators,ArrayList<Object> reference) {
+		// to complete
+		ArrayList<Integer> index_to_del=new ArrayList<Integer>();	
+		ArrayList<Thread> threads = new ArrayList<Thread>(Parameters.Max_Threads);
+		ArrayList<ArrayList<Boolean>> booleans= new ArrayList<ArrayList<Boolean>>();
+		for(int i=0; i<threads.size(); i++) {
+			threads.add(new Thread());	
+		}
+		
+		for(int i=0;i<threads.size();i++){
+			threads.get(i).run();
+		}
+		for(int i=0;i<comparators.size();i++) {
+			booleans.add(new ArrayList<Boolean>());
+		}
+		int iter=0;//iterator
+		while(iter!=comparators.size()) {
+			//if((comparators.size()-iter) <threads.size()) {
+			   for (int i=0;iter<threads.size();i++) {
+				   if(iter<comparators.size()) {
+					 threads.set(i, new Thread(new Comparator((ArrayList<Object>) object_to_compare.get(iter), comparators.get(iter), (ArrayList<Object>) reference.get(iter), booleans.get(i))))  ;
+					 threads.get(i).start();
+				   }
+				   
+				   iter++;
+			   }
+				for(int i=0;i<threads.size();i++) {
+					try {
+						threads.get(i).join();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+			//}
+//			else {
+//				for(int i=0;i<threads.size();i++) {
+//					threads.set(i, new Thread(new Comparator(object_to_compare, tableName, reference, null)))
+//				}
+//				for(int i=0;i<threads.size();i++) {
+//					try {
+//						threads.get(i).join();
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+			
+		}
+		boolean buffer=true;
+		for(int i=0;i<booleans.get(0).size();i++)
+		{
+			buffer=true;
+			for(int y=0;y<booleans.size();y++) {
+				if(booleans.get(y).get(i)==false&&buffer==true) {
+					buffer=false;
+				}
+			}
+			if(buffer==false) {
+				index_to_del.add(i);
+			}
+		}
+		
+		this.delete_row(index_to_del);
+		//DataTable result = new DataTable();	
+		
+		return this;
+	}	
+	
+
 	public DataTable project(ArrayList<String> column_toproject) {// Input is column name of the column we want to keep
+		// Duplicate élimination 
 		for (int i=0;i< columnName.size();i++)
 		{
-			if (column_toproject.contains(columnName.get(i))) {
+			if (column_toproject.contains(columnName.get(i))) {	
 				
 			}
 			else {
@@ -74,12 +141,9 @@ public class DataTable {
 		
 		return this;
 	}
-
 	public DataTable hashJoin(DataTable table_A, DataTable table_B, ArrayList<String> on_columnName, Object condition) {
 		DataTable join_table = new DataTable();
 		// To Complete
-
-		//
 		return join_table;
 	}
 	// Join as we consider joining on the primary key of this table. 
@@ -94,7 +158,7 @@ public class DataTable {
 		table_tojoin.sort(columntable2.get(0));// "" ""
 	//	new QuickSort((ArrayList<Object>) this.column.get(this.get_column_index(table1)));
 		//
-		int leftit=0,rightit=0;// iterator of my join columns 
+		int leftit=0,rightit=0;// iterators of my join columns 
 		ArrayList<Object> newcolonne = new ArrayList<Object>(); // Pour les nouvelles colonones : - joincolumn - this.colonne puis colonne to join
 		//ArrayList<Object> newrow= new ArrayList<Object>();
 		ArrayList<Object> newcolumnname= new ArrayList<Object>();
@@ -149,7 +213,6 @@ public class DataTable {
 		// Implement for row but not other ?
 		
 	}
-
 	protected int get_column_index(String name) {
 		int index = -1;
 		if (columnName.contains(name)) {
@@ -157,13 +220,11 @@ public class DataTable {
 		}
 		return index;
 	}
-
 	public ArrayList<Object> get_column(String column_name) {
 		ArrayList<Object> result = new ArrayList<>();
 		result = (ArrayList<Object>) column.get(this.get_column_index(column_name));
 		return result;
 	}
-
 	public void load(String path, ArrayList<String> filenameStrings, boolean type_buffer, ArrayList<String> type_columns) {
 		type = type_buffer;
 		//columnName=filenameStrings;
@@ -206,16 +267,52 @@ public class DataTable {
 				threads.add(new Thread());	
 			}
 			Boolean loading=false;
-			while(loading)
+			while(loading) // A check pas sur que ça marche 
 			{
 				if(columnList.size() <=Parameters.Max_Threads) {
 					for(int i=0; i<columnList.size(); i++){
 //						for (int y=0;y<columnList.get(i).size();y++)
 //						threads.set(i,new Thread(Reader(columnList.get(y),this.column));
+						
 						threads.set(i, new Thread(new Reader(columnList.get(i),this.column)));
+						threads.get(i).start();
+						try {
+							for (int y=0;y<threads.size();y++) {
+								threads.get(y).join();
+							}
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					
+					}
+				loading=true;
+				}
+				else{
+					for(int i=0;i<Parameters.Max_Threads;i++)
+					{
+						threads.set(i, new Thread(new Reader(columnList.get(i),this.column)));
+						
+						
+							for (int y=0;y<threads.size();y++) {
+								try {
+									threads.get(y).join();
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						for(int y=0;y<i;y++) {
+							columnList.remove(0);
+						}
 					}
 				}
+				if(columnList.isEmpty()) {
+					loading=true;
+				}
+				
 			}
+			
 			
 //			for(int i=0; i<columnList.size(); i++){
 //				if(columnList.size() <=Parameters.Max_Threads) {
@@ -262,8 +359,69 @@ public class DataTable {
 			}
 		}
 	}
+// If we implement row by row 	
+//	public void delete_row(ArrayList<Integer> to_del_index)
+//	{
+//		for(Integer x = ((ArrayList<Object>) column.get(0)).size() - 1; x > 0; x--)// For Each row 
+//		{
+//		    if ( to_del_index.contains(x)) { // If we have to supress the index 
+//		    	for(int y=0;y<column.size();y++){// For All the Table
+//		    		((ArrayList<Object>) column.get(y)).remove(x);
+//		    	}
+//		    }
+//		}
+//	}
 	
-
+	public void delete_row(ArrayList<Integer> to_del_index)
+	{
+		ArrayList<Thread> threads = new ArrayList<Thread>(Parameters.Max_Threads);
+		for(int i=0; i<Parameters.Max_Threads; i++) {
+			threads.add(new Thread());	
+		}
+		boolean deleting_finish=false;
+		int iter=0;//iterator
+		while(!deleting_finish)// Check boucle infinie 
+		{
+			if (threads.size()<=column.size()){
+				for(int y=iter ;y<column.size(); y++) {
+				//	threads.set(i, null)
+					threads.set(y, new Thread(new Filtre(to_del_index, (ArrayList<Object>) column.get(y))));
+					threads.get(y).start();
+				}
+				for(int i=0;i<threads.size();i++) {
+					try {
+						threads.get(i).join();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			deleting_finish=true;
+			}
+			else {
+				for(int i=iter;i<threads.size();i++) {
+					//	threads.set(i, null)
+						threads.set(i, new Thread(new Filtre(to_del_index, (ArrayList<Object>) column.get(i))));
+						threads.get(i).start();
+						iter++;
+					}
+					for(int i=0;i<threads.size();i++) {
+						try {
+							threads.get(i).join();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				if(iter==column.size())
+				{
+					deleting_finish=true;
+				}
+			}
+		}
+	}
+	
+	
 	public void load(String string) {
 		// appel load Array list
 		// utilises les constantes en paramètre pour upload la table souhaiter
@@ -275,8 +433,24 @@ public class DataTable {
 
 	}
 
-	public void print(int row_number) {
-
+	public void print(int nrow) {
+		String ligne =  "";
+		for (int i=0;i<columnName.size();i++) {
+			ligne.concat(columnName.get(i));
+			ligne.concat(" / ");
+		}
+		System.out.println(ligne);
+		int i=0;
+		for(i=0;i<nrow;i++){
+			ligne="";
+			for(int y=0;y<column.size();y++){
+			((ArrayList<Object>)	column.get(i)).get(y);
+				ligne.concat(((ArrayList<Object>) column.get(i)).get(y).toString());
+				ligne.concat(" / ");
+				
+			}
+			System.out.println(ligne);
+		}
 	}
 
 	protected void set_column() {
