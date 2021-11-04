@@ -9,20 +9,23 @@ public class Comparator implements Runnable {
 	private ArrayList<Object> object_to_check;
 	private String comparator_type;
 	private ArrayList<Object> reference;
-	private ArrayList<Boolean> to_keep;//Boolean with true the index of the table wich will not be supress
-	
-	public Comparator(ArrayList<Object> object_to_check,String comparator_type,ArrayList<Object> reference,ArrayList<Boolean> to_keep) {
+	//public ArrayList<Boolean> to_keep;//Boolean with true the index of the table wich will not be supress
+	public ArrayList<Object> to_keep;
+	//ublic Comparator(ArrayList<Object> object_to_check,String comparator_type,ArrayList<Object> reference,ArrayList<Boolean> to_keep) {
+	public Comparator(ArrayList<Object> object_to_check,String comparator_type,ArrayList<Object> reference,ArrayList<Object> to_keep) {
 		// TODO Auto-generated constructor stub
 		this.object_to_check=object_to_check;
 		this.comparator_type=comparator_type;
 		this.reference=reference;
+		this.to_keep=to_keep;
 	}
 	
 	// This function construct the to_keep boolean list
 	public void run() {
-		
+		//to_keep=new ArrayList<Boolean>(object_to_check.size());
+		//to_keep=new ArrayList<Object>(object_to_check.size());
 			// If is int 
-			if(((ArrayList<Object>) object_to_check.get(0)).get(0) instanceof Integer) {
+			if( object_to_check.get(0) instanceof Integer) {
 				if(reference.size()>1) { // If we compare list of integer into list of integer
 					if(comparator_type=="=") {
 					
@@ -63,9 +66,9 @@ public class Comparator implements Runnable {
 					else if(comparator_type=="<") {
 						for(int i=0;i<object_to_check.size();i++) {
 							if (((Integer) object_to_check.get(i)).intValue() < ((Integer) reference.get(0)).intValue() )
-								to_keep.add(true);
+								to_keep.add(new Boolean(true));
 							else 
-								to_keep.add(false);
+								to_keep.add(new Boolean(false));
 						}
 					}
 					else if(comparator_type==">") {
@@ -183,7 +186,7 @@ public class Comparator implements Runnable {
 //					}
 //				}
 			}
-
+			System.out.println("tokeepsize : "+to_keep.size());
 		}
 		
 	

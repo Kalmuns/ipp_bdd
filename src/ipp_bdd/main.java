@@ -1,5 +1,6 @@
 package ipp_bdd;
 
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 
 public class main {
@@ -28,11 +29,15 @@ public class main {
 		db.load(path, columnNameConstructor.getcolmunName(), type_buffer, type_columns);
 		db.print(10);
 		ArrayList<Integer> to_del=new ArrayList<Integer>();
-		to_del.add(5);
-		to_del.add(6);
-		to_del.add(2);
-		
-		db.delete_row(to_del);
+		ArrayList<String> comparators =new ArrayList<String>();
+		comparators.add("<");
+		ArrayList<ArrayList<Object>> tocompare=new ArrayList<ArrayList<Object>>();
+		ArrayList<Object> buffertocompare= new ArrayList<Object> ();
+		buffertocompare.add(new Integer(2));
+		tocompare.add(buffertocompare);
+		ArrayList<ArrayList<Object>> ref=new ArrayList<ArrayList<Object>>();
+		ref.add(new ArrayList<Object>(db.get_column("P_PARTKEY")));
+		db.filter(ref, comparators, tocompare);
 		db.print(5);
 	}
 }

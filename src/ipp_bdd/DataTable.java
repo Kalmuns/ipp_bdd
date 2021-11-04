@@ -26,6 +26,8 @@ public class DataTable {
 	protected ArrayList<String> columnName;
 	protected String tableName;
 	protected ArrayList<String> columnList ;
+	ArrayList<ArrayList<Object>> booleans;
+	//ArrayList<ArrayList<Boolean>> booleans;
 	public DataTable() {
 		// TODO Auto-generated constructor stub
 		row = new ArrayList<Object>();
@@ -53,33 +55,33 @@ public class DataTable {
 		return result;
 	}
 
+ 
 	
-	
-	public DataTable filter(ArrayList<Object> object_to_compare,ArrayList<String> comparators,ArrayList<Object> reference) { // 
+	public DataTable filter(ArrayList<ArrayList<Object>> object_to_compare,ArrayList<String> comparators,ArrayList<ArrayList<Object>> reference) { // 
 		// to complete
 		ArrayList<Integer> index_to_del=new ArrayList<Integer>();	
 		ArrayList<Thread> threads = new ArrayList<Thread>(Parameters.Max_Threads);
-		ArrayList<ArrayList<Boolean>> booleans= new ArrayList<ArrayList<Boolean>>();
-		for(int i=0; i<threads.size(); i++) {
+		//booleans= new ArrayList<ArrayList<Boolean>>();
+		booleans= new ArrayList<ArrayList<Object>>();
+		for(int i=0; i<Parameters.Max_Threads; i++) {
 			threads.add(new Thread());	
 		}
-		
-		for(int i=0;i<threads.size();i++){
-			threads.get(i).run();
-		}
 		for(int i=0;i<comparators.size();i++) {
-			booleans.add(new ArrayList<Boolean>());
+			//booleans.add(new ArrayList<Boolean>());
+			booleans.add(new ArrayList<Object>());
 		}
 		int iter=0;//iterator
-		while(iter!=comparators.size()) {
+		while(iter<comparators.size()) {
 			//if((comparators.size()-iter) <threads.size()) {
 			   for (int i=0;iter<threads.size();i++) {
 				   if(iter<comparators.size()) {
-					 threads.set(i, new Thread(new Comparator((ArrayList<Object>) object_to_compare.get(iter), comparators.get(iter), (ArrayList<Object>) reference.get(iter), booleans.get(i))))  ;
-					 threads.get(i).start();
+					 threads.set(i, new Thread(new Comparator((ArrayList<Object>) object_to_compare.get(iter), comparators.get(iter), (ArrayList<Object>) reference.get(iter), booleans.get(i))));
 				   }	   
 				   iter++;
 			   }
+				for(int i=0;i<threads.size();i++) {
+					    threads.get(i).run();
+				}
 				for(int i=0;i<threads.size();i++) {
 					try {
 						threads.get(i).join();
@@ -110,7 +112,7 @@ public class DataTable {
 		{
 			buffer=true;
 			for(int y=0;y<booleans.size();y++) {
-				if(booleans.get(y).get(i)==false&&buffer==true) {
+				if(((Boolean)booleans.get(y).get(i))==false&&buffer==true) {
 					buffer=false;
 				}
 			}
@@ -121,7 +123,7 @@ public class DataTable {
 		
 		this.delete_row(index_to_del);
 		//DataTable result = new DataTable();	
-		
+		booleans=null;
 		return this;
 	}	
 	
@@ -214,13 +216,20 @@ public class DataTable {
 			}
 		return index;
 	}
+	
+	
+	
+	
 	protected void sort(String colonne) {
 		this.column.get(this.get_column_index(colonne));
-		
-		// Implement quicksort from https://www.youtube.com/watch?v=Fiot5yuwPAg ? 
 		// Implement for row but not other ?
 		
+		
+		
+		
 	}
+	
+	
 	protected int get_column_index(String name) {
 		int index = -1;
 		if (columnName.contains(name)) {
@@ -228,11 +237,15 @@ public class DataTable {
 		}
 		return index;
 	}
+	
+	
 	public ArrayList<Object> get_column(String column_name) {
 		ArrayList<Object> result = new ArrayList<>();
 		result = (ArrayList<Object>) column.get(this.get_column_index(column_name));
 		return result;
 	}
+	
+	
 	public void load(String path, ArrayList<String> filenameStrings, boolean type_buffer, ArrayList<String> type_columns) {
 		type = type_buffer;
 		
@@ -493,6 +506,7 @@ public class DataTable {
 	protected void set_columns() {
 
 	}
+	
 
 	//public static void main(String[] args) {
 		/*
