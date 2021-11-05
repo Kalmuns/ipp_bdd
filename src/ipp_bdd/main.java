@@ -25,9 +25,12 @@ public class main {
 		boolean type_buffer = true;
 		ArrayList<String> type_columns = new ArrayList<String>();
 		DataTable db = new DataTable();
-		ColumnNameConstructor columnNameConstructor=new ColumnNameConstructor("Part");
+		ColumnNameConstructor columnNameConstructor=new ColumnNameConstructor("Nation");
 		db.load(path, columnNameConstructor.getcolmunName(), type_buffer, type_columns);
-		db.print(10);
+		db.print(25);
+		db.sort("N_REGIONKEY");
+		db.print(25);
+		/*
 		ArrayList<Integer> to_del=new ArrayList<Integer>();
 		ArrayList<String> comparators =new ArrayList<String>();
 		comparators.add("<");
@@ -39,6 +42,7 @@ public class main {
 		ref.add(new ArrayList<Object>(db.get_column("P_PARTKEY")));
 		db.filter(ref, comparators, tocompare);
 		db.print(5);
+		*/
 	}
 }
 	
