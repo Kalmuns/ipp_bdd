@@ -721,16 +721,24 @@ public class DataTable {
 					if (iter < column.size()) {
 						threads.set(y, new Thread(new Filtre(to_del_index, (ArrayList<Object>) column.get(iter))));
 					}
+					else {
+						threads.set(y, null);
+					}
 					iter++;
 				}
 
 				for (int i = 0; i < threads.size(); i++) {
-					threads.get(i).run();
+					if(threads.get(i)!=null) {
+						threads.get(i).run();
+					}
+					
 				}
 
 				for (int i = 0; i < threads.size(); i++) {
 					try {
-						threads.get(i).join();
+						if(threads.get(i)!=null) {
+							threads.get(i).join();
+						}
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

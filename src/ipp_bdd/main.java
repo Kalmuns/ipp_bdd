@@ -40,21 +40,21 @@ public class main {
 		columnto_join2.add("R_NAME");
 		
 		
-		ArrayList<String> comparators =new ArrayList<String>();
-		comparators.add("contain");
-		ArrayList<ArrayList<Object>> tocompare=new ArrayList<ArrayList<Object>>();
-		ArrayList<Object> buffertocompare= new ArrayList<Object> ();
-		buffertocompare.add(new String("ir"));
-		tocompare.add(buffertocompare);
-		ArrayList<ArrayList<Object>> ref=new ArrayList<ArrayList<Object>>();
-	
-		DataTable db3;
-		db3=db1.sortjoin(db2, columnto_join1, columnto_join2,"=" ,false);
-		ref.add(new ArrayList<Object>(db3.get_column("N_NAME")));
-		db3.filter(ref, comparators, tocompare);
-		db3.print(2);
+//		ArrayList<String> comparators =new ArrayList<String>();
+//		comparators.add("contain");
+//		ArrayList<ArrayList<Object>> tocompare=new ArrayList<ArrayList<Object>>();
+//		ArrayList<Object> buffertocompare= new ArrayList<Object> ();
+//		buffertocompare.add(new String("ir"));
+//		tocompare.add(buffertocompare);
+//		ArrayList<ArrayList<Object>> ref=new ArrayList<ArrayList<Object>>();
+//	
+//		DataTable db3;
+//		db3=db1.sortjoin(db2, columnto_join1, columnto_join2,"=" ,false);
+//		ref.add(new ArrayList<Object>(db3.get_column("N_NAME")));
+//		db3.filter(ref, comparators, tocompare);
+//		db3.print(2);
 		
-		//		db.print(25);
+//				db.print(25);
 //		db.sort("N_REGIONKEY");
 //		db.print(25);
 		
@@ -73,7 +73,7 @@ public class main {
 		db.print(25);
 		db.groupBy(column_togroup, aggregation);
 		db.sort("N_REGIONKEY");
-		db.print(25);
+		db.print(4);
 
 		
 //		ArrayList<Integer> to_del=new ArrayList<Integer>();
