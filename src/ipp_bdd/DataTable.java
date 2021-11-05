@@ -242,7 +242,7 @@ public class DataTable {
 					buffer = false;
 				}
 			}
-			if (buffer == true) {
+			if (buffer == false) {
 				index_to_del.add(i);
 			}
 		}
@@ -379,8 +379,8 @@ public class DataTable {
 					}
 					
 					if(leftindex<lefttable_size-1&&rightindex<righttable_size-1)
-						if( this.get_column(0).get(0) instanceof Integer) {
-							if( ((Integer)  this.get_column(0).get(leftindex)) <= ((Integer)  table_tojoin.get_column(0).get(rightindex))) {
+						if( this.get_column(columntable1.get(0)).get(0) instanceof Integer) {
+							if( ((Integer)  this.get_column(columntable1.get(0)).get(leftindex)) <= ((Integer)  table_tojoin.get_column(0).get(rightindex))) {
 								leftindex++;
 							}
 							else {
@@ -388,16 +388,16 @@ public class DataTable {
 							}
 						}
 						
-						if( this.get_column(0).get(0) instanceof Float) {
-							if( ((Float)  this.get_column(0).get(leftindex)) <= ((Float)  table_tojoin.get_column(0).get(rightindex))) {
+						if( this.get_column(columntable1.get(0)).get(0) instanceof Float) {
+							if( ((Float)  this.get_column(columntable1.get(0)).get(leftindex)) <= ((Float)  table_tojoin.get_column(0).get(rightindex))) {
 								leftindex++;
 							}
 							else {
 								rightindex++;
 							}
 						}
-						if( this.get_column(0).get(0) instanceof String) {
-							if( ((String)  this.get_column(0).get(leftindex)).compareTo(((String)  table_tojoin.get_column(0).get(rightindex))) <=0) {
+						if( this.get_column(columntable1.get(0)).get(0) instanceof String) {
+							if( ((String)  this.get_column(columntable1.get(0)).get(leftindex)).compareTo(((String)  table_tojoin.get_column(0).get(rightindex))) <=0) {
 								leftindex++;
 							}
 							else {
