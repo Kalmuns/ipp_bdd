@@ -301,7 +301,14 @@ public class DataTable {
 		// To Complete
 		return join_table;
 	}
-
+	protected DataTable distinct(){
+	    ArrayList<String> first = new ArrayList<String>();
+	    for(int i=0; i<columnName.size(); i++){
+	        first.add("Frist");
+	    }
+	    this.groupBy(this.columnName, this.columnName, first);
+	    return this;
+	}
 	
 public DataTable sortjoin(DataTable table_tojoin, ArrayList<String>	 columntable1, ArrayList<String> columntable2, String condition,boolean alreadyjoin) {
 		
