@@ -17,6 +17,8 @@ import java.io.FileReader;
 
 import javax.print.attribute.Size2DSyntax;
 import javax.sql.rowset.Joinable;
+import javax.swing.GroupLayout.Group;
+
 import java.lang.Math.*;
 import java.lang.Thread;
 
@@ -60,6 +62,62 @@ public class DataTable {
 		DataTable result = new DataTable(column_buffer, columnName_buffer);
 		return result;
 	}
+	
+	public DataTable groupBy(ArrayList<String> column_togroup,ArrayList<String> column_tokeep,ArrayList<String> aggregation,boolean sorted){
+		// SI DEJA SORT 
+		ArrayList<String> groupkey= new ArrayList<String>(((ArrayList<Object>) column.get(0)).size());
+		for (int i=0;i<((ArrayList<Object>) column.get(0)).size();i++) {
+			groupkey.add(null);
+		}
+		String buffer_groupkey;
+		ArrayList<Integer> id_column_togroup=new ArrayList<Integer>();
+		for(int i=0;i<column_togroup.size();i++) {
+			id_column_togroup.add(this.get_column_index(column_togroup.get(i)));
+		}
+		for (int i=0;i<((ArrayList<Object>) column.get(0)).size();i++) {
+			buffer_groupkey="";
+			for(int j=0;j<id_column_togroup.size();j++) {
+					buffer_groupkey=buffer_groupkey.concat(((ArrayList<Object>) column.get(j)).get(i).toString());
+			}			
+			groupkey.set(i, buffer_groupkey);
+		}
+		column.add(groupkey);
+		columnName.add("groupkey");
+		this.sort("groupkey");
+			
+			int i=1;
+			int compteur=0;
+			ArrayList<Object> restoftable= new ArrayList<Object>();
+			for( i=0;i<column_tokeep.size();i++)
+			{
+				restoftable.add(null);
+			}
+			while (i<((ArrayList<Object>) this.column.get(0)).size() && this.get_column("groupkey").get(i).equals(this.get_column("groupkey").get(i-1))) {
+				
+			}
+		
+		
+		for( i=1;i<((ArrayList<Object>) column.get(0)).size();i++) {
+			if(this.get_column("groupkey").get(i).equals(this.get_column("groupkey").get(i-1))) {
+				compteur++; 
+				for( i=0;i<column_tokeep.size();i++)
+				{
+					restoftable.set(i, null);
+				}
+				
+			}
+			else {
+				
+				compteur=0;
+				restoftable= new ArrayList<Object>();
+				
+			}
+		}
+		
+		
+		return this;
+	}
+	
 
 	public DataTable filter(ArrayList<ArrayList<Object>> object_to_compare, ArrayList<String> comparators,
 			ArrayList<ArrayList<Object>> reference) { //
