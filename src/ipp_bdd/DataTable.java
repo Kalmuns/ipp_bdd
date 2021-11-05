@@ -133,11 +133,14 @@ public class DataTable {
 		return this;
 	}
 
-	public void invert_row(int rowa, int rowb) {
+	public void invert_row(int rowa, int rowb,int index_column_unmodified) {
 		for (int i = 0; i < column.size(); i++) {
-			Object buffer = ((ArrayList<Object>) column.get(i)).get(rowa);
-			((ArrayList<Object>) column.get(i)).set(rowa, ((ArrayList<Object>) column.get(i)).get(rowb));
-			((ArrayList<Object>) column.get(i)).set(rowb, buffer);
+			if( i!=index_column_unmodified) {
+				Object buffer = ((ArrayList<Object>) column.get(i)).get(rowa);
+				((ArrayList<Object>) column.get(i)).set(rowa, ((ArrayList<Object>) column.get(i)).get(rowb));
+				((ArrayList<Object>) column.get(i)).set(rowb, buffer);
+			}
+			
 		}
 	}
 
@@ -311,7 +314,7 @@ public class DataTable {
 		sort(col_to_order, 0, length - 1);
 		for(int i=0; i<length; i++) {
 			if(buffer_sort.get(i)!=-1) {
-				invert_row(i,buffer_sort.get(i));
+				invert_row(i,buffer_sort.get(i),this.get_column_index(col_to_order));
 			}
 		}
 		buffer_sort = null;

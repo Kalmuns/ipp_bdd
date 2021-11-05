@@ -30,19 +30,19 @@ public class main {
 		db.print(25);
 		db.sort("N_REGIONKEY");
 		db.print(25);
-		/*
-		ArrayList<Integer> to_del=new ArrayList<Integer>();
-		ArrayList<String> comparators =new ArrayList<String>();
-		comparators.add("contain");
-		ArrayList<ArrayList<Object>> tocompare=new ArrayList<ArrayList<Object>>();
-		ArrayList<Object> buffertocompare= new ArrayList<Object> ();
-		buffertocompare.add(new String("goldenrod"));
-		tocompare.add(buffertocompare);
-		ArrayList<ArrayList<Object>> ref=new ArrayList<ArrayList<Object>>();
-		ref.add(new ArrayList<Object>(db.get_column("P_NAME")));
-		db.filter(ref, comparators, tocompare);
-		db.print(5);
-		*/
+		
+//		ArrayList<Integer> to_del=new ArrayList<Integer>();
+//		ArrayList<String> comparators =new ArrayList<String>();
+//		comparators.add("contain");
+//		ArrayList<ArrayList<Object>> tocompare=new ArrayList<ArrayList<Object>>();
+//		ArrayList<Object> buffertocompare= new ArrayList<Object> ();
+//		buffertocompare.add(new String("goldenrod"));
+//		tocompare.add(buffertocompare);
+//		ArrayList<ArrayList<Object>> ref=new ArrayList<ArrayList<Object>>();
+//		ref.add(new ArrayList<Object>(db.get_column("P_NAME")));
+//		db.filter(ref, comparators, tocompare);
+//		db.print(5);
+		
 	}
 }
 	
