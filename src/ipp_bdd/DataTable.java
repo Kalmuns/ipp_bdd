@@ -85,31 +85,42 @@ public class DataTable {
 		columnName.add("groupkey");
 		this.sort("groupkey");
 			
-			int i=1;
-			int compteur=0;
-			ArrayList<Object> restoftable= new ArrayList<Object>();
-			for( i=0;i<column_tokeep.size();i++)
-			{
-				restoftable.add(null);
-			}
-			while (i<((ArrayList<Object>) this.column.get(0)).size() && this.get_column("groupkey").get(i).equals(this.get_column("groupkey").get(i-1))) {
-				
-			}
+		
+		
+		
+		int i=1;
+		int compteur=0;
+		ArrayList<Object> restoftable= new ArrayList<Object>();
+		for( i=0;i<column_tokeep.size();i++)
+		{
+			restoftable.add(null);
+		}
+//			while (i<((ArrayList<Object>) this.column.get(0)).size() && this.get_column("groupkey").get(i).equals(this.get_column("groupkey").get(i-1))) {
+//				
+//			}
 		
 		
 		for( i=1;i<((ArrayList<Object>) column.get(0)).size();i++) {
 			if(this.get_column("groupkey").get(i).equals(this.get_column("groupkey").get(i-1))) {
 				compteur++; 
-				for( i=0;i<column_tokeep.size();i++)
-				{
-					restoftable.set(i, null);
+				if(restoftable.get(0) ==null)
+					for( int y=0;y<column_tokeep.size();y++)
+					{
+						
+						//restoftable.set(y, buffer);
+					}
+				else {
+					//restoftable.
 				}
-				
 			}
 			else {
 				
 				compteur=0;
-				restoftable= new ArrayList<Object>();
+				for( int y=0;y<column_tokeep.size();y++)
+				{
+					restoftable.set(y, null);
+				}
+				
 				
 			}
 		}
@@ -243,41 +254,125 @@ public class DataTable {
 	// On the columntable1 & 2 we consider the column to keep for the result
 	// Fort both of them index 0 must be the column on wich join will be perform
 
-	/*
-	 * public DataTable sortjoin(DataTable table_tojoin, ArrayList<String>
-	 * columntable1, ArrayList<String> columntable2, Object condition) { DataTable
-	 * join_table = new DataTable();
-	 * 
-	 * // sorton index // @SuppressWarnings this.sort(columntable1.get(0));// 0
-	 * index is the name of the join column
-	 * table_tojoin.sort(columntable2.get(0));// "" "" // new
-	 * QuickSort((ArrayList<Object>)
-	 * this.column.get(this.get_column_index(table1))); // int leftit=0,rightit=0;//
-	 * iterators of my join columns ArrayList<Object> newcolonne = new
-	 * ArrayList<Object>(); // Pour les nouvelles colonones : - joincolumn -
-	 * this.colonne puis colonne to join //ArrayList<Object> newrow= new
-	 * ArrayList<Object>(); ArrayList<Object> newcolumnname= new
-	 * ArrayList<Object>(); for(int i=0;i<columntable1.size();i++) {
-	 * newcolumnname.add(columntable1.get(i)); } for (int
-	 * i=1;i<columntable2.size();i++){ newcolumnname.add(columntable2.get(i)); }
-	 * if(row.isEmpty()) { int sizetablel = ((ArrayList<Object>)
-	 * this.column.get(0)).size(); int
-	 * sizetabler=table_tojoin.get_column(columntable2.get(0)).size(); while (leftit
-	 * < sizetablel && rightit< sizetabler) { if
-	 * (this.get_column(columntable1.get(0)).get(leftit) ==
-	 * table_tojoin.get_column(columntable2.get(0)).get(rightit) ) {// A check for
-	 * (int i =0;i<columntable1.size();i++){
-	 * newcolonne.add(this.get_column(columntable1.get(i)).get(leftit)); } for (int
-	 * i=1;i<columntable2.size();i++) {
-	 * newcolonne.add(this.get_column(columntable2.get(i)).get(rightit)); } }
-	 * if((Integer)this.get_column(columntable1.get(0)).get(leftit) <=(Integer)
-	 * table_tojoin.get_column(columntable2.get(0)).get(rightit)){ leftit++; } else
-	 * { rightit++; }
-	 * 
-	 * } } else if (column.isEmpty()) { // Si row join a coder ici }
-	 * 
-	 * return join_table; }
-	 */
+	
+//	 public DataTable sortjoin(DataTable table_tojoin, ArrayList<String>
+//	 columntable1, ArrayList<String> columntable2, Object condition) { DataTable
+//	 join_table = new DataTable();
+//	 
+//	  // sorton index // @SuppressWarnings this.sort(columntable1.get(0));// 0
+//	  index is the name of the join column
+//	  table_tojoin.sort(columntable2.get(0));// "" "" // new
+//	  QuickSort((ArrayList<Object>)
+//	  this.column.get(this.get_column_index(table1))); // int leftit=0,rightit=0;//
+//	  iterators of my join columns ArrayList<Object> newcolonne = new
+//	  ArrayList<Object>(); // Pour les nouvelles colonones : - joincolumn -
+//	  this.colonne puis colonne to join //ArrayList<Object> newrow= new
+//	  ArrayList<Object>(); ArrayList<Object> newcolumnname= new
+//	  ArrayList<Object>(); for(int i=0;i<columntable1.size();i++) {
+//	  newcolumnname.add(columntable1.get(i)); } for (int
+//	  i=1;i<columntable2.size();i++){ newcolumnname.add(columntable2.get(i)); }
+//	  if(row.isEmpty()) { int sizetablel = ((ArrayList<Object>)
+//	  this.column.get(0)).size(); int
+//	  sizetabler=table_tojoin.get_column(columntable2.get(0)).size(); while (leftit
+//	  < sizetablel && rightit< sizetabler) { if
+//	  (this.get_column(columntable1.get(0)).get(leftit) ==
+//	  table_tojoin.get_column(columntable2.get(0)).get(rightit) ) {// A check for
+//	  (int i =0;i<columntable1.size();i++){
+//	  newcolonne.add(this.get_column(columntable1.get(i)).get(leftit)); } for (int
+//	  i=1;i<columntable2.size();i++) {
+//	 * newcolonne.add(this.get_column(columntable2.get(i)).get(rightit)); } }
+//	 * if((Integer)this.get_column(columntable1.get(0)).get(leftit) <=(Integer)
+//	 * table_tojoin.get_column(columntable2.get(0)).get(rightit)){ leftit++; } else
+//	 * { rightit++; }
+//	 * 
+//	 * } } else if (column.isEmpty()) { // Si row join a coder ici }
+//	 * 
+//	 * return join_table; }
+//	 */
+	// colonne condition are applied on first colonne in colonne table
+	public DataTable sortjoin(DataTable table_tojoin, ArrayList<String>	 columntable1, ArrayList<String> columntable2, String condition,boolean alreadyjoin) {
+		
+		if(!alreadyjoin) {
+			this.sort(columntable1.get(0));
+			table_tojoin.sort(columntable2.get(0));
+		}
+		int leftindex=0,rightindex=0;
+		
+		ArrayList<Object> newcolonne = new ArrayList<Object>(); // Pour les nouvelles colonones : - joincolumn - this.colonne puis colonne to join
+		for(int i=0;i<(columntable1.size()+columntable2.size()-1);i++) {
+			newcolonne.add(new ArrayList<Object>());
+		}
+		//ArrayList<Object> newrow= new ArrayList<Object>();
+		ArrayList<String> newcolumnname= new ArrayList<String>();
+		for(int i=0;i<columntable1.size();i++) {
+			newcolumnname.add(columntable1.get(i));
+		}
+		for (int i=1;i<columntable2.size();i++){
+			newcolumnname.add(columntable2.get(i));
+		}
+		
+		int lefttable_size=((ArrayList<Object>) column.get(0)).size();
+		int righttable_size=table_tojoin.get_column(0).size();
+	
+		
+		while(leftindex<lefttable_size||rightindex<righttable_size) {
+
+			
+					if (this.get_column(columntable1.get(0)).get(leftindex).equals(table_tojoin.get_column(columntable2.get(0)).get(rightindex)) ) {// si objet égaux
+						for (int i =0;i<columntable1.size();i++){
+							((ArrayList<Object>) newcolonne.get(i)).add(this.get_column(columntable1.get(i)).get(leftindex));
+						}
+						for (int i=1;i<columntable2.size();i++) {
+							((ArrayList<Object>) newcolonne.get(columntable1.size()+i-1)).add(table_tojoin.get_column(columntable2.get(i)).get(rightindex));
+						}
+					}
+					
+					if(leftindex<lefttable_size-1&&rightindex<righttable_size-1)
+						if( this.get_column(0).get(0) instanceof Integer) {
+							if( ((Integer)  this.get_column(0).get(leftindex)) <= ((Integer)  table_tojoin.get_column(0).get(rightindex))) {
+								leftindex++;
+							}
+							else {
+								rightindex++;
+							}
+						}
+						
+						if( this.get_column(0).get(0) instanceof Float) {
+							if( ((Float)  this.get_column(0).get(leftindex)) <= ((Float)  table_tojoin.get_column(0).get(rightindex))) {
+								leftindex++;
+							}
+							else {
+								rightindex++;
+							}
+						}
+						if( this.get_column(0).get(0) instanceof String) {
+							if( ((String)  this.get_column(0).get(leftindex)).compareTo(((String)  table_tojoin.get_column(0).get(rightindex))) <=0) {
+								leftindex++;
+							}
+							else {
+								rightindex++;
+							}
+						}
+					
+					else if(leftindex<lefttable_size-1) {
+						leftindex++;
+					}
+					else if (rightindex<righttable_size-1){
+						rightindex++;
+					}
+					else if(!(leftindex<lefttable_size-1 && rightindex<righttable_size-1)) {
+						leftindex++;
+						rightindex++;
+					}
+		}
+		
+		
+		DataTable  join_table= new DataTable(newcolonne, newcolumnname);
+		return join_table;
+	}
+	public ArrayList<Object> get_column(int index){
+		return (ArrayList<Object>) column.get(index);
+	}
 
 	// Return an arraylist of integer corresponding to the index of column based on
 	// their name
@@ -658,6 +753,7 @@ public class DataTable {
 	protected void set_columns() {
 
 	}
+	
 
 	// public static void main(String[] args) {
 	/*
