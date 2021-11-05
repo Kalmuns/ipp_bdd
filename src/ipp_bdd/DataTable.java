@@ -63,7 +63,8 @@ public class DataTable {
 		return result;
 	}
 
-	public DataTable groupBy(ArrayList<String> column_togroup, ArrayList<String> aggregation) {
+	public DataTable groupBy(ArrayList<String> column_togroup, ArrayList<String> column_tokeep,
+			ArrayList<String> aggregation) {
 		ArrayList<String> groupkey = new ArrayList<String>(((ArrayList<Object>) column.get(0)).size());
 		for (int i = 0; i < ((ArrayList<Object>) column.get(0)).size(); i++) {
 			groupkey.add(null);
@@ -73,6 +74,10 @@ public class DataTable {
 		for (int i = 0; i < column_togroup.size(); i++) {
 			id_column_togroup.add(this.get_column_index(column_togroup.get(i)));
 		}
+		ArrayList<Integer> id_column_tokeep = new ArrayList<Integer>();
+		for (int i = 0; i < column_tokeep.size(); i++) {
+			id_column_tokeep.add(this.get_column_index(column_tokeep.get(i)));
+		}
 		for (int i = 0; i < ((ArrayList<Object>) column.get(0)).size(); i++) {
 			buffer_groupkey = "";
 			for (int j = 0; j < id_column_togroup.size(); j++) {
@@ -81,94 +86,88 @@ public class DataTable {
 			}
 			groupkey.set(i, buffer_groupkey);
 		}
+
 		column.add(groupkey);
 		columnName.add("groupkey");
 		this.sort("groupkey");
-/*<<<<<<< HEAD
-			
-		
-		
-		
-		int i=1;
-		int compteur=0;
-		ArrayList<Object> restoftable= new ArrayList<Object>();
-		for( i=0;i<column_tokeep.size();i++)
-		{
-			restoftable.add(null);
-		}
-//			while (i<((ArrayList<Object>) this.column.get(0)).size() && this.get_column("groupkey").get(i).equals(this.get_column("groupkey").get(i-1))) {
-//				
-//			}
-		
-		
-		for( i=1;i<((ArrayList<Object>) column.get(0)).size();i++) {
-			if(this.get_column("groupkey").get(i).equals(this.get_column("groupkey").get(i-1))) {
-				compteur++; 
-				if(restoftable.get(0) ==null)
-					for( int y=0;y<column_tokeep.size();y++)
-					{
-						
-						//restoftable.set(y, buffer);
-					}
-				else {
-					//restoftable.
-				}
-			}
-			else {
-				
-				compteur=0;
-				for( int y=0;y<column_tokeep.size();y++)
-				{
-					restoftable.set(y, null);
-				}
-				
-				
-=======*/
+		/*
+		 * <<<<<<< HEAD
+		 * 
+		 * 
+		 * 
+		 * 
+		 * int i=1; int compteur=0; ArrayList<Object> restoftable= new
+		 * ArrayList<Object>(); for( i=0;i<column_tokeep.size();i++) {
+		 * restoftable.add(null); } // while (i<((ArrayList<Object>)
+		 * this.column.get(0)).size() &&
+		 * this.get_column("groupkey").get(i).equals(this.get_column("groupkey").get(i-1
+		 * ))) { // // }
+		 * 
+		 * 
+		 * for( i=1;i<((ArrayList<Object>) column.get(0)).size();i++) {
+		 * if(this.get_column("groupkey").get(i).equals(this.get_column("groupkey").get(
+		 * i-1))) { compteur++; if(restoftable.get(0) ==null) for( int
+		 * y=0;y<column_tokeep.size();y++) {
+		 * 
+		 * //restoftable.set(y, buffer); } else { //restoftable. } } else {
+		 * 
+		 * compteur=0; for( int y=0;y<column_tokeep.size();y++) { restoftable.set(y,
+		 * null); }
+		 * 
+		 * 
+		 * =======
+		 */
 
 		ArrayList<Object> temp_table = new ArrayList<Object>();
-		for (int i = 0; i < column.size() - 1; i++) {
+		for (int i = 0; i < column_tokeep.size(); i++) {
 			temp_table.add(null);
 		}
 		int final_pos = 0;
 		while (final_pos < ((ArrayList<Object>) this.column.get(0)).size()) {
 			int temp_pos = 0;
 			int temp_count = 1;
-			for (int i = 0; i < column.size() - 1; i++) {
-				temp_table.set(i, ((ArrayList<Object>) column.get(i)).get(final_pos));
+			for (int i = 0; i < column_tokeep.size(); i++) {
+				temp_table.set(i, ((ArrayList<Object>) column.get(id_column_tokeep.get(i))).get(final_pos));
 			}
 			while (final_pos + temp_pos + 1 < ((ArrayList<Object>) this.column.get(0)).size()
 					&& ((ArrayList<Object>) column.get(column.size() - 1)).get(final_pos + temp_pos).equals(
 							((ArrayList<Object>) column.get(column.size() - 1)).get(final_pos + temp_pos + 1))) {
-				for (int i = 0; i < column.size() - 1; i++) {
+				for (int i = 0; i < id_column_tokeep.size(); i++) {
 					if (aggregation.get(i).equals("concat")) {
-						temp_table.set(i, ((String) temp_table.get(i))
-								.concat((String) ((ArrayList<Object>) column.get(i)).get(final_pos + temp_pos + 1)));
+						temp_table.set(i,
+								((String) temp_table.get(i))
+										.concat("|" + (String) ((ArrayList<Object>) column.get(id_column_tokeep.get(i)))
+												.get(final_pos + temp_pos + 1)));
 					}
 					if (aggregation.get(i).equals("sum") || aggregation.get(i).equals("average")) {
 						if (temp_table.get(i) instanceof Integer) {
-							temp_table.set(i, ((Integer) temp_table.get(i))
-									+ (Integer) ((ArrayList<Object>) column.get(i)).get(final_pos + temp_pos + 1));
+							temp_table.set(i,
+									((Integer) temp_table.get(i))
+											+ (Integer) ((ArrayList<Object>) column.get(id_column_tokeep.get(i)))
+													.get(final_pos + temp_pos + 1));
 						}
 						if (temp_table.get(i) instanceof Float) {
-							temp_table.set(i, ((Float) temp_table.get(i))
-									+ (Float) ((ArrayList<Object>) column.get(i)).get(final_pos + temp_pos + 1));
+							temp_table.set(i,
+									((Float) temp_table.get(i))
+											+ (Float) ((ArrayList<Object>) column.get(id_column_tokeep.get(i)))
+													.get(final_pos + temp_pos + 1));
 						}
 					}
 				}
 				temp_pos++;
 				temp_count++;
 			}
-			for (int i = 0; i < column.size() - 1; i++) {
+			for (int i = 0; i < column_tokeep.size(); i++) {
 				if (aggregation.get(i).equals("average")) {
 					if (temp_table.get(i) instanceof Integer) {
-						temp_table.set(i, ((Integer) temp_table.get(i)) / temp_count);
+						temp_table.set(i, new Float(((Integer) temp_table.get(i)).floatValue() / temp_count));
 					}
 					if (temp_table.get(i) instanceof Float) {
 						temp_table.set(i, ((Float) temp_table.get(i)) / temp_count);
 					}
 
 				}
-				((ArrayList<Object>) this.column.get(i)).set(final_pos, temp_table.get(i));
+				((ArrayList<Object>) this.column.get(id_column_tokeep.get(i))).set(final_pos, temp_table.get(i));
 			}
 			ArrayList<Integer> to_delete = new ArrayList<Integer>();
 			for (int j = final_pos + 1; j < final_pos + temp_pos + 1; j++) {
@@ -179,6 +178,7 @@ public class DataTable {
 			}
 			final_pos++;
 		}
+		this.project(column_tokeep);
 		return this;
 	}
 
@@ -305,7 +305,6 @@ public class DataTable {
 	// On the columntable1 & 2 we consider the column to keep for the result
 	// Fort both of them index 0 must be the column on wich join will be perform
 
-	
 //	 public DataTable sortjoin(DataTable table_tojoin, ArrayList<String>
 //	 columntable1, ArrayList<String> columntable2, Object condition) { DataTable
 //	 join_table = new DataTable();
@@ -341,87 +340,87 @@ public class DataTable {
 //	 * return join_table; }
 //	 */
 	// colonne condition are applied on first colonne in colonne table
-	public DataTable sortjoin(DataTable table_tojoin, ArrayList<String>	 columntable1, ArrayList<String> columntable2, String condition,boolean alreadyjoin) {
-		
-		if(!alreadyjoin) {
+	public DataTable sortjoin(DataTable table_tojoin, ArrayList<String> columntable1, ArrayList<String> columntable2,
+			String condition, boolean alreadyjoin) {
+
+		if (!alreadyjoin) {
 			this.sort(columntable1.get(0));
 			table_tojoin.sort(columntable2.get(0));
 		}
-		int leftindex=0,rightindex=0;
-		
-		ArrayList<Object> newcolonne = new ArrayList<Object>(); // Pour les nouvelles colonones : - joincolumn - this.colonne puis colonne to join
-		for(int i=0;i<(columntable1.size()+columntable2.size()-1);i++) {
+		int leftindex = 0, rightindex = 0;
+
+		ArrayList<Object> newcolonne = new ArrayList<Object>(); // Pour les nouvelles colonones : - joincolumn -
+																// this.colonne puis colonne to join
+		for (int i = 0; i < (columntable1.size() + columntable2.size() - 1); i++) {
 			newcolonne.add(new ArrayList<Object>());
 		}
-		//ArrayList<Object> newrow= new ArrayList<Object>();
-		ArrayList<String> newcolumnname= new ArrayList<String>();
-		for(int i=0;i<columntable1.size();i++) {
+		// ArrayList<Object> newrow= new ArrayList<Object>();
+		ArrayList<String> newcolumnname = new ArrayList<String>();
+		for (int i = 0; i < columntable1.size(); i++) {
 			newcolumnname.add(columntable1.get(i));
 		}
-		for (int i=1;i<columntable2.size();i++){
+		for (int i = 1; i < columntable2.size(); i++) {
 			newcolumnname.add(columntable2.get(i));
 		}
-		
-		int lefttable_size=((ArrayList<Object>) column.get(0)).size();
-		int righttable_size=table_tojoin.get_column(0).size();
-	
-		
-		while(leftindex<lefttable_size||rightindex<righttable_size) {
 
-			
-					if (this.get_column(columntable1.get(0)).get(leftindex).equals(table_tojoin.get_column(columntable2.get(0)).get(rightindex)) ) {// si objet égaux
-						for (int i =0;i<columntable1.size();i++){
-							((ArrayList<Object>) newcolonne.get(i)).add(this.get_column(columntable1.get(i)).get(leftindex));
-						}
-						for (int i=1;i<columntable2.size();i++) {
-							((ArrayList<Object>) newcolonne.get(columntable1.size()+i-1)).add(table_tojoin.get_column(columntable2.get(i)).get(rightindex));
-						}
-					}
-					
-					if(leftindex<lefttable_size-1&&rightindex<righttable_size-1)
-						if( this.get_column(0).get(0) instanceof Integer) {
-							if( ((Integer)  this.get_column(0).get(leftindex)) <= ((Integer)  table_tojoin.get_column(0).get(rightindex))) {
-								leftindex++;
-							}
-							else {
-								rightindex++;
-							}
-						}
-						
-						if( this.get_column(0).get(0) instanceof Float) {
-							if( ((Float)  this.get_column(0).get(leftindex)) <= ((Float)  table_tojoin.get_column(0).get(rightindex))) {
-								leftindex++;
-							}
-							else {
-								rightindex++;
-							}
-						}
-						if( this.get_column(0).get(0) instanceof String) {
-							if( ((String)  this.get_column(0).get(leftindex)).compareTo(((String)  table_tojoin.get_column(0).get(rightindex))) <=0) {
-								leftindex++;
-							}
-							else {
-								rightindex++;
-							}
-						}
-					
-					else if(leftindex<lefttable_size-1) {
+		int lefttable_size = ((ArrayList<Object>) column.get(0)).size();
+		int righttable_size = table_tojoin.get_column(0).size();
+
+		while (leftindex < lefttable_size || rightindex < righttable_size) {
+
+			if (this.get_column(columntable1.get(0)).get(leftindex)
+					.equals(table_tojoin.get_column(columntable2.get(0)).get(rightindex))) {// si objet égaux
+				for (int i = 0; i < columntable1.size(); i++) {
+					((ArrayList<Object>) newcolonne.get(i)).add(this.get_column(columntable1.get(i)).get(leftindex));
+				}
+				for (int i = 1; i < columntable2.size(); i++) {
+					((ArrayList<Object>) newcolonne.get(columntable1.size() + i - 1))
+							.add(table_tojoin.get_column(columntable2.get(i)).get(rightindex));
+				}
+			}
+
+			if (leftindex < lefttable_size - 1 && rightindex < righttable_size - 1)
+				if (this.get_column(0).get(0) instanceof Integer) {
+					if (((Integer) this.get_column(0).get(leftindex)) <= ((Integer) table_tojoin.get_column(0)
+							.get(rightindex))) {
 						leftindex++;
-					}
-					else if (rightindex<righttable_size-1){
+					} else {
 						rightindex++;
 					}
-					else if(!(leftindex<lefttable_size-1 && rightindex<righttable_size-1)) {
-						leftindex++;
-						rightindex++;
-					}
+				}
+
+			if (this.get_column(0).get(0) instanceof Float) {
+				if (((Float) this.get_column(0).get(leftindex)) <= ((Float) table_tojoin.get_column(0)
+						.get(rightindex))) {
+					leftindex++;
+				} else {
+					rightindex++;
+				}
+			}
+			if (this.get_column(0).get(0) instanceof String) {
+				if (((String) this.get_column(0).get(leftindex))
+						.compareTo(((String) table_tojoin.get_column(0).get(rightindex))) <= 0) {
+					leftindex++;
+				} else {
+					rightindex++;
+				}
+			}
+
+			else if (leftindex < lefttable_size - 1) {
+				leftindex++;
+			} else if (rightindex < righttable_size - 1) {
+				rightindex++;
+			} else if (!(leftindex < lefttable_size - 1 && rightindex < righttable_size - 1)) {
+				leftindex++;
+				rightindex++;
+			}
 		}
-		
-		
-		DataTable  join_table= new DataTable(newcolonne, newcolumnname);
+
+		DataTable join_table = new DataTable(newcolonne, newcolumnname);
 		return join_table;
 	}
-	public ArrayList<Object> get_column(int index){
+
+	public ArrayList<Object> get_column(int index) {
 		return (ArrayList<Object>) column.get(index);
 	}
 
@@ -720,23 +719,22 @@ public class DataTable {
 					// threads.set(i, null)
 					if (iter < column.size()) {
 						threads.set(y, new Thread(new Filtre(to_del_index, (ArrayList<Object>) column.get(iter))));
-					}
-					else {
+					} else {
 						threads.set(y, null);
 					}
 					iter++;
 				}
 
 				for (int i = 0; i < threads.size(); i++) {
-					if(threads.get(i)!=null) {
+					if (threads.get(i) != null) {
 						threads.get(i).run();
 					}
-					
+
 				}
 
 				for (int i = 0; i < threads.size(); i++) {
 					try {
-						if(threads.get(i)!=null) {
+						if (threads.get(i) != null) {
 							threads.get(i).join();
 						}
 					} catch (InterruptedException e) {
@@ -812,7 +810,6 @@ public class DataTable {
 	protected void set_columns() {
 
 	}
-	
 
 	// public static void main(String[] args) {
 	/*
