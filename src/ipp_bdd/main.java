@@ -24,7 +24,9 @@ public class main {
 //
 //		boolean type_buffer = true;
 //		ArrayList<String> type_columns = new ArrayList<String>();
-//		
+//		 String path = "50MoColumns/";
+//		 boolean type_buffer = true;
+//		 ArrayList<String> type_columns = new ArrayList<String>();
 //		DataTable db1= new DataTable();
 //		DataTable db2=new DataTable();
 //		ColumnNameConstructor columnNameConstructor1=new ColumnNameConstructor("Nation");
@@ -60,9 +62,9 @@ public class main {
 		 
 		 Test test=new Test();
 		 test.rowvscolumnload();
-		// test.filtertest();
-		 //test.grouptest();
-		 
+		 test.filtertest();
+		 test.grouptest();
+		 test.Jointest();
 		///////////////////////////////////////////////////////////////////
 //				db.print(25);
 //		db.sort("N_REGIONKEY");
