@@ -62,7 +62,7 @@ public class main {
 		// test.rowvscolumnload();
 		// test.filtertest();
 		 test.grouptest();
-		 
+		 //test.jointest();
 		///////////////////////////////////////////////////////////////////
 //				db.print(25);
 //		db.sort("N_REGIONKEY");
