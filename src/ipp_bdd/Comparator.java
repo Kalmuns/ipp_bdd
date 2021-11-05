@@ -9,9 +9,7 @@ public class Comparator implements Runnable {
 	private ArrayList<Object> object_to_check;
 	private String comparator_type;
 	private ArrayList<Object> reference;
-	//public ArrayList<Boolean> to_keep;//Boolean with true the index of the table wich will not be supress
 	public ArrayList<Object> to_keep;
-	//ublic Comparator(ArrayList<Object> object_to_check,String comparator_type,ArrayList<Object> reference,ArrayList<Boolean> to_keep) {
 	public Comparator(ArrayList<Object> object_to_check,String comparator_type,ArrayList<Object> reference,ArrayList<Object> to_keep) {
 		// TODO Auto-generated constructor stub
 		this.object_to_check=object_to_check;
@@ -19,14 +17,10 @@ public class Comparator implements Runnable {
 		this.reference=reference;
 		this.to_keep=to_keep;
 	}
-	
-	// This function construct the to_keep boolean list
+
 	public void run() {
-		//to_keep=new ArrayList<Boolean>(object_to_check.size());
-		//to_keep=new ArrayList<Object>(object_to_check.size());
-			// If is int 
 			if( object_to_check.get(0) instanceof Integer) {
-				if(reference.size()>1) { // If we compare list of integer into list of integer
+				if(reference.size()>1) { 
 					if(comparator_type=="=") {
 					
 						for(int i=0;i<object_to_check.size();i++) {
@@ -186,7 +180,6 @@ public class Comparator implements Runnable {
 //					}
 //				}
 			}
-			System.out.println("tokeepsize : "+to_keep.size());
 		}
 		
 	
