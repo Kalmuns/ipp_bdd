@@ -113,15 +113,16 @@ public class DataTable {
 //			}
 
 		}
-		boolean buffer = true;
-		for (int i = 0; i < booleans.get(0).size(); i++) {
-			buffer = true;
-			for (int y = 0; y < booleans.size(); y++) {
-				if (((Boolean) booleans.get(y).get(i)) == false && buffer == true) {
-					buffer = false;
+		boolean buffer=true;
+		for(int i=0;i<booleans.get(0).size();i++)
+		{
+			buffer=true;
+			for(int y=0;y<booleans.size();y++) {
+				if(((Boolean)booleans.get(y).get(i))==false) {
+					buffer=false;
 				}
 			}
-			if (buffer == false) {
+			if(buffer==true) {
 				index_to_del.add(i);
 			}
 		}

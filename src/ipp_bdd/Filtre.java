@@ -13,10 +13,10 @@ public class Filtre implements  Runnable {
 	}
 	
 	public void run() {
-		for(Integer x = to_filter.size() - 1; x > 0; x--)// For Each row 
+		for(Integer x = to_filter.size()-1 ; x >= 0; x--)// For Each row 
 		{
 		    if ( to_del_index.contains(x)) { // If we have to supress the index 
-		    	to_filter.remove(x);
+		    	to_filter.remove(x.intValue());
 		    }
 		}
 	}
