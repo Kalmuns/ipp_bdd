@@ -62,62 +62,85 @@ public class DataTable {
 		DataTable result = new DataTable(column_buffer, columnName_buffer);
 		return result;
 	}
-	
-	public DataTable groupBy(ArrayList<String> column_togroup,ArrayList<String> column_tokeep,ArrayList<String> aggregation,boolean sorted){
-		// SI DEJA SORT 
-		ArrayList<String> groupkey= new ArrayList<String>(((ArrayList<Object>) column.get(0)).size());
-		for (int i=0;i<((ArrayList<Object>) column.get(0)).size();i++) {
+
+	public DataTable groupBy(ArrayList<String> column_togroup, ArrayList<String> aggregation) {
+		ArrayList<String> groupkey = new ArrayList<String>(((ArrayList<Object>) column.get(0)).size());
+		for (int i = 0; i < ((ArrayList<Object>) column.get(0)).size(); i++) {
 			groupkey.add(null);
 		}
 		String buffer_groupkey;
-		ArrayList<Integer> id_column_togroup=new ArrayList<Integer>();
-		for(int i=0;i<column_togroup.size();i++) {
+		ArrayList<Integer> id_column_togroup = new ArrayList<Integer>();
+		for (int i = 0; i < column_togroup.size(); i++) {
 			id_column_togroup.add(this.get_column_index(column_togroup.get(i)));
 		}
-		for (int i=0;i<((ArrayList<Object>) column.get(0)).size();i++) {
-			buffer_groupkey="";
-			for(int j=0;j<id_column_togroup.size();j++) {
-					buffer_groupkey=buffer_groupkey.concat(((ArrayList<Object>) column.get(j)).get(i).toString());
-			}			
+		for (int i = 0; i < ((ArrayList<Object>) column.get(0)).size(); i++) {
+			buffer_groupkey = "";
+			for (int j = 0; j < id_column_togroup.size(); j++) {
+				buffer_groupkey = buffer_groupkey
+						.concat(((ArrayList<Object>) column.get(id_column_togroup.get(j))).get(i).toString());
+			}
 			groupkey.set(i, buffer_groupkey);
 		}
 		column.add(groupkey);
 		columnName.add("groupkey");
 		this.sort("groupkey");
-			
-			int i=1;
-			int compteur=0;
-			ArrayList<Object> restoftable= new ArrayList<Object>();
-			for( i=0;i<column_tokeep.size();i++)
-			{
-				restoftable.add(null);
-			}
-			while (i<((ArrayList<Object>) this.column.get(0)).size() && this.get_column("groupkey").get(i).equals(this.get_column("groupkey").get(i-1))) {
-				
-			}
-		
-		
-		for( i=1;i<((ArrayList<Object>) column.get(0)).size();i++) {
-			if(this.get_column("groupkey").get(i).equals(this.get_column("groupkey").get(i-1))) {
-				compteur++; 
-				for( i=0;i<column_tokeep.size();i++)
-				{
-					restoftable.set(i, null);
-				}
-				
-			}
-			else {
-				
-				compteur=0;
-				restoftable= new ArrayList<Object>();
-				
-			}
+
+		ArrayList<Object> temp_table = new ArrayList<Object>();
+		for (int i = 0; i < column.size() - 1; i++) {
+			temp_table.add(null);
 		}
-		
-		
+		int final_pos = 0;
+		while (final_pos < ((ArrayList<Object>) this.column.get(0)).size()) {
+			int temp_pos = 0;
+			int temp_count = 1;
+			for (int i = 0; i < column.size() - 1; i++) {
+				temp_table.set(i, ((ArrayList<Object>) column.get(i)).get(final_pos));
+			}
+			while (final_pos + temp_pos + 1 < ((ArrayList<Object>) this.column.get(0)).size()
+					&& ((ArrayList<Object>) column.get(column.size() - 1)).get(final_pos + temp_pos).equals(
+							((ArrayList<Object>) column.get(column.size() - 1)).get(final_pos + temp_pos + 1))) {
+				for (int i = 0; i < column.size() - 1; i++) {
+					if (aggregation.get(i).equals("concat")) {
+						temp_table.set(i, ((String) temp_table.get(i))
+								.concat((String) ((ArrayList<Object>) column.get(i)).get(final_pos + temp_pos + 1)));
+					}
+					if (aggregation.get(i).equals("sum") || aggregation.get(i).equals("average")) {
+						if (temp_table.get(i) instanceof Integer) {
+							temp_table.set(i, ((Integer) temp_table.get(i))
+									+ (Integer) ((ArrayList<Object>) column.get(i)).get(final_pos + temp_pos + 1));
+						}
+						if (temp_table.get(i) instanceof Float) {
+							temp_table.set(i, ((Float) temp_table.get(i))
+									+ (Float) ((ArrayList<Object>) column.get(i)).get(final_pos + temp_pos + 1));
+						}
+					}
+				}
+				temp_pos++;
+				temp_count++;
+			}
+			for (int i = 0; i < column.size() - 1; i++) {
+				if (aggregation.get(i).equals("average")) {
+					if (temp_table.get(i) instanceof Integer) {
+						temp_table.set(i, ((Integer) temp_table.get(i)) / temp_count);
+					}
+					if (temp_table.get(i) instanceof Float) {
+						temp_table.set(i, ((Float) temp_table.get(i)) / temp_count);
+					}
+
+				}
+				((ArrayList<Object>) this.column.get(i)).set(final_pos, temp_table.get(i));
+			}
+			ArrayList<Integer> to_delete = new ArrayList<Integer>();
+			for (int j = final_pos + 1; j < final_pos + temp_pos + 1; j++) {
+				to_delete.add(j);
+			}
+			if (to_delete.size() > 0) {
+				this.delete_row(to_delete);
+			}
+			final_pos++;
+		}
 		return this;
 	}
-	
 
 	public DataTable filter(ArrayList<ArrayList<Object>> object_to_compare, ArrayList<String> comparators,
 			ArrayList<ArrayList<Object>> reference) { //
@@ -171,16 +194,15 @@ public class DataTable {
 //			}
 
 		}
-		boolean buffer=true;
-		for(int i=0;i<booleans.get(0).size();i++)
-		{
-			buffer=true;
-			for(int y=0;y<booleans.size();y++) {
-				if(((Boolean)booleans.get(y).get(i))==false) {
-					buffer=false;
+		boolean buffer = true;
+		for (int i = 0; i < booleans.get(0).size(); i++) {
+			buffer = true;
+			for (int y = 0; y < booleans.size(); y++) {
+				if (((Boolean) booleans.get(y).get(i)) == false) {
+					buffer = false;
 				}
 			}
-			if(buffer==true) {
+			if (buffer == true) {
 				index_to_del.add(i);
 			}
 		}
@@ -191,29 +213,29 @@ public class DataTable {
 		return this;
 	}
 
-	public void invert_row(int rowa, int rowb,int index_column_unmodified) {
+	public void invert_row(int rowa, int rowb, int index_column_unmodified) {
 		for (int i = 0; i < column.size(); i++) {
-			if( i!=index_column_unmodified) {
+			if (i != index_column_unmodified) {
 				Object buffer = ((ArrayList<Object>) column.get(i)).get(rowa);
 				((ArrayList<Object>) column.get(i)).set(rowa, ((ArrayList<Object>) column.get(i)).get(rowb));
 				((ArrayList<Object>) column.get(i)).set(rowb, buffer);
 			}
-			
+
 		}
 	}
-	
+
 	public void permute_rows(int index_column_unmodified) {
 		ArrayList<Object> temp_column = new ArrayList<Object>(((ArrayList<Object>) column.get(0)).size());
-		for(int j=0; j<((ArrayList<Object>) column.get(0)).size(); j++) {
+		for (int j = 0; j < ((ArrayList<Object>) column.get(0)).size(); j++) {
 			temp_column.add(null);
 		}
-		for(int i=0; i<column.size(); i++) {
-			if( i!=index_column_unmodified) {
-				for(int j=0; j<buffer_sort.size(); j++) {
-					temp_column.set(j,(((ArrayList<Object>) column.get(i)).get(buffer_sort.get(j))));
+		for (int i = 0; i < column.size(); i++) {
+			if (i != index_column_unmodified) {
+				for (int j = 0; j < buffer_sort.size(); j++) {
+					temp_column.set(j, (((ArrayList<Object>) column.get(i)).get(buffer_sort.get(j))));
 				}
-				for(int j=0; j<((ArrayList<Object>) column.get(0)).size(); j++) {
-					((ArrayList<Object>) column.get(i)).set(j,temp_column.get(j));
+				for (int j = 0; j < ((ArrayList<Object>) column.get(0)).size(); j++) {
+					((ArrayList<Object>) column.get(i)).set(j, temp_column.get(j));
 				}
 			}
 		}

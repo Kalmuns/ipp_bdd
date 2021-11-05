@@ -26,8 +26,16 @@ public class main {
 		ArrayList<String> type_columns = new ArrayList<String>();
 		DataTable db = new DataTable();
 		ColumnNameConstructor columnNameConstructor=new ColumnNameConstructor("Nation");
+		ArrayList<String> column_togroup = new ArrayList<String>(2);
+		column_togroup.add("N_REGIONKEY");
+		ArrayList<String> aggregation = new ArrayList<String>(2);
+		aggregation.add("sum");
+		aggregation.add("concat");
+		aggregation.add("average");
+		aggregation.add("concat");
 		db.load(path, columnNameConstructor.getcolmunName(), type_buffer, type_columns);
 		db.print(25);
+		db.groupBy(column_togroup, aggregation);
 		db.sort("N_REGIONKEY");
 		db.print(25);
 		
