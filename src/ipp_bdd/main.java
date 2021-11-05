@@ -24,6 +24,7 @@ public class main {
 
 		boolean type_buffer = true;
 		ArrayList<String> type_columns = new ArrayList<String>();
+
 		DataTable db1= new DataTable();
 		DataTable db2=new DataTable();
 		ColumnNameConstructor columnNameConstructor1=new ColumnNameConstructor("Nation");
@@ -57,7 +58,23 @@ public class main {
 //		db.sort("N_REGIONKEY");
 //		db.print(25);
 		
-		
+		//////////////////////////////////////////////////////////////////
+
+		DataTable db = new DataTable();
+		ColumnNameConstructor columnNameConstructor=new ColumnNameConstructor("Nation");
+		ArrayList<String> column_togroup = new ArrayList<String>(2);
+		column_togroup.add("N_REGIONKEY");
+		ArrayList<String> aggregation = new ArrayList<String>(2);
+		aggregation.add("sum");
+		aggregation.add("concat");
+		aggregation.add("average");
+		aggregation.add("concat");
+		db.load(path, columnNameConstructor.getcolmunName(), type_buffer, type_columns);
+		db.print(25);
+		db.groupBy(column_togroup, aggregation);
+		db.sort("N_REGIONKEY");
+		db.print(25);
+
 		
 //		ArrayList<Integer> to_del=new ArrayList<Integer>();
 //		ArrayList<String> comparators =new ArrayList<String>();
