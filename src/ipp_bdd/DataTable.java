@@ -143,6 +143,23 @@ public class DataTable {
 			
 		}
 	}
+	
+	public void permute_rows(int index_column_unmodified) {
+		ArrayList<Object> temp_column = new ArrayList<Object>(((ArrayList<Object>) column.get(0)).size());
+		for(int j=0; j<((ArrayList<Object>) column.get(0)).size(); j++) {
+			temp_column.add(null);
+		}
+		for(int i=0; i<column.size(); i++) {
+			if( i!=index_column_unmodified) {
+				for(int j=0; j<buffer_sort.size(); j++) {
+					temp_column.set(j,(((ArrayList<Object>) column.get(i)).get(buffer_sort.get(j))));
+				}
+				for(int j=0; j<((ArrayList<Object>) column.get(0)).size(); j++) {
+					((ArrayList<Object>) column.get(i)).set(j,temp_column.get(j));
+				}
+			}
+		}
+	}
 
 	public DataTable project(ArrayList<String> column_toproject) {// Input is column name of the column we want to keep
 		// Duplicate élimination
@@ -312,11 +329,7 @@ public class DataTable {
 			buffer_sort.add(new Integer(i));
 		}
 		sort(col_to_order, 0, length - 1);
-		for(int i=0; i<length; i++) {
-			if(buffer_sort.get(i)!=-1) {
-				invert_row(i,buffer_sort.get(i),this.get_column_index(col_to_order));
-			}
-		}
+		permute_rows(this.get_column_index(col_to_order));
 		buffer_sort = null;
 	}
 
