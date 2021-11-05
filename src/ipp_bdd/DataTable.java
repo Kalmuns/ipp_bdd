@@ -330,6 +330,7 @@ public class DataTable {
 				i--;
 			}
 		}
+		this.distinct();
 		return this;
 	}
 
