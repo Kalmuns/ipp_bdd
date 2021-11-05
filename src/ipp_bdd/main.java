@@ -24,7 +24,7 @@ public class main {
 
 		boolean type_buffer = true;
 		ArrayList<String> type_columns = new ArrayList<String>();
-
+		/*
 		DataTable db1= new DataTable();
 		DataTable db2=new DataTable();
 		ColumnNameConstructor columnNameConstructor1=new ColumnNameConstructor("Nation");
@@ -38,8 +38,8 @@ public class main {
 		columnto_join1.add("N_NAME");
 		columnto_join2.add("R_REGIONKEY");
 		columnto_join2.add("R_NAME");
-		
-		
+		*/
+		//////////////////////////////////////////////////////////////////
 		ArrayList<String> comparators =new ArrayList<String>();
 		comparators.add("contain");
 		ArrayList<ArrayList<Object>> tocompare=new ArrayList<ArrayList<Object>>();
@@ -56,12 +56,13 @@ public class main {
 		ref.add(new ArrayList<Object>(db3.get_column("R_NAME")));
 		db3.filter(ref, comparators, tocompare);
 		db3.print(2);
-		
+		///////////////////////////////////////////////////////////////////
 //				db.print(25);
 //		db.sort("N_REGIONKEY");
 //		db.print(25);
 		
 		//////////////////////////////////////////////////////////////////
+
 
 //		DataTable db = new DataTable();
 //		ColumnNameConstructor columnNameConstructor=new ColumnNameConstructor("Nation");
@@ -77,6 +78,28 @@ public class main {
 //		db.groupBy(column_togroup, aggregation);
 //		db.sort("N_REGIONKEY");
 //		db.print(4);
+
+		DataTable db = new DataTable();
+		ColumnNameConstructor columnNameConstructor=new ColumnNameConstructor("Part");
+		ArrayList<String> column_togroup = new ArrayList<String>(2);
+		column_togroup.add("P_BRAND");
+		column_togroup.add("P_MFGR");
+		ArrayList<String> column_tokeep = new ArrayList<String>(4);
+		column_tokeep.add("P_BRAND");
+		column_tokeep.add("P_MFGR");
+		column_tokeep.add("P_NAME");
+		column_tokeep.add("P_RETAILPRICE");
+		column_tokeep.add("P_SIZE");
+		ArrayList<String> aggregation = new ArrayList<String>(4);
+		aggregation.add("first");
+		aggregation.add("first");
+		aggregation.add("first");
+		aggregation.add("sum");
+		aggregation.add("average");
+		db.load(path, columnNameConstructor.getcolmunName(), type_buffer, type_columns);
+		db.print(25);
+		db.groupBy(column_togroup, column_tokeep, aggregation);
+		db.print(25);
 
 		
 //		ArrayList<Integer> to_del=new ArrayList<Integer>();
