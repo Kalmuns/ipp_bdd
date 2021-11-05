@@ -31,7 +31,6 @@ public class Reader implements Runnable{
 				else if(Parameters.typeMap.get(map_key)=="string")
 					this.document.add(current_line);
 			}
-			System.out.println("");
 			if (br != null)
 				br.close();
 		} catch (Exception e) {
