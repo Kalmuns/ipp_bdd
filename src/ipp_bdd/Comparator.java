@@ -83,7 +83,7 @@ public class Comparator implements Runnable {
 			}
 			
 			// If we look for a float
-			else if( ((ArrayList<Object>) object_to_check.get(0)).get(0) instanceof Float ) {
+			else if( object_to_check.get(0) instanceof Float ) {
 				if(reference.size()>1) // IF we compare float to a flot
 				{
 					if(comparator_type=="=") {
@@ -138,7 +138,7 @@ public class Comparator implements Runnable {
 					}
 				}
 			}
-			else if(((ArrayList<Object>) object_to_check.get(0)).get(0) instanceof String) {
+			else if( object_to_check.get(0) instanceof String) {
 				if(reference.size()>1) {
 					
 				

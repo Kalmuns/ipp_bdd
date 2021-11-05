@@ -30,13 +30,13 @@ public class main {
 		db.print(10);
 		ArrayList<Integer> to_del=new ArrayList<Integer>();
 		ArrayList<String> comparators =new ArrayList<String>();
-		comparators.add("<");
+		comparators.add("contain");
 		ArrayList<ArrayList<Object>> tocompare=new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> buffertocompare= new ArrayList<Object> ();
-		buffertocompare.add(new Integer(2));
+		buffertocompare.add(new String("goldenrod"));
 		tocompare.add(buffertocompare);
 		ArrayList<ArrayList<Object>> ref=new ArrayList<ArrayList<Object>>();
-		ref.add(new ArrayList<Object>(db.get_column("P_PARTKEY")));
+		ref.add(new ArrayList<Object>(db.get_column("P_NAME")));
 		db.filter(ref, comparators, tocompare);
 		db.print(5);
 	}

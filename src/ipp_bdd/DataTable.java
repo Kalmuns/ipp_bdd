@@ -112,11 +112,11 @@ public class DataTable {
 		{
 			buffer=true;
 			for(int y=0;y<booleans.size();y++) {
-				if(((Boolean)booleans.get(y).get(i))==false&&buffer==true) {
+				if(((Boolean)booleans.get(y).get(i))==false) {
 					buffer=false;
 				}
 			}
-			if(buffer==false) {
+			if(buffer==true) {
 				index_to_del.add(i);
 			}
 		}
