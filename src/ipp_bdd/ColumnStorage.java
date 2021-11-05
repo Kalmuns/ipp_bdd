@@ -100,7 +100,7 @@ public class ColumnStorage {
 		int nbTables = 8;
 		String[] filenameStrings = new String[] { "customer", "lineitem", "nation", "orders", "part", "partsupp",
 				"region", "supplier" };
-		String[] filenameShortcuts = new String[] {"C", "L", "N", "O", "P", "PS", "R", "S"};
+		String[] filenameShortcuts = new String[] { "C", "L", "N", "O", "P", "PS", "R", "S" };
 		int[] nbColumns = new int[] { 8, 16, 4, 9, 9, 5, 3, 7 };
 		String[] customerColumns = new String[] { "CUSTKEY", "NAME", "ADDRESS", "NATIONKEY", "PHONE", "ACCTBAL",
 				"MKTSEGMENT", "COMMENT" };
