@@ -6,7 +6,7 @@ public class Test {
 	 String path = "50MoColumns/";
 	 boolean type_buffer = true;
 	 ArrayList<String> type_columns = new ArrayList<String>();
-	public Test() {
+	 public Test() {
 
 	}
 	
@@ -15,18 +15,34 @@ public class Test {
 		DataTable columnDataTable=new DataTable();
 		ArrayList<String> toload=new ArrayList<String>();
 		toload.add("P_PARTKEY");
-		toload.add("P_NAME");
-		toload.add("P_RETAILPRICE");
+        toload.add("P_NAME");
+        toload.add("P_RETAILPRICE");
 		 
 	    long time=  System.nanoTime();
 		columnDataTable.load(path, toload, type_buffer, type_columns);
 	    time=System.nanoTime()-time;
 	    System.out.print("time in nanoseconds = "+time);
 	   
+	    ArrayList<String> toloadrow=new ArrayList<String>();
+		toloadrow.add("part");
 	    DataTable rowTable= new DataTable();
+	    ArrayList<String> type_columns = new ArrayList<String>();
+	    type_columns.add("int");
+	    type_columns.add("string");
+	    type_columns.add("string");
+	    type_columns.add("string");
+	    type_columns.add("string");
+	    type_columns.add("int");
+	    type_columns.add("string");
+	    type_columns.add("float");
+	    type_columns.add("string");
 	    time=  System.nanoTime();
-	    rowTable.load("50Mo/", toload, false, type_columns);
+	    rowTable.load("50Mo/", toloadrow, false, type_columns);
 	    
+	    ArrayList<Integer> toprint=new ArrayList<Integer>();
+	    toprint.add(0);
+	    toprint.add(1);
+	    rowTable.row_select(toprint);
 	    time=System.nanoTime()-time;
 	    System.out.print("time in nanoseconds = "+time);
 	    //columnDataTable.print(50);

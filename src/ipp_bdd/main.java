@@ -59,9 +59,9 @@ public class main {
 //		db3.print(2);
 		 
 		 Test test=new Test();
-		// test.rowvscolumnload();
+		 test.rowvscolumnload();
 		// test.filtertest();
-		 test.grouptest();
+		 //test.grouptest();
 		 
 		///////////////////////////////////////////////////////////////////
 //				db.print(25);

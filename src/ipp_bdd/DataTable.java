@@ -787,13 +787,22 @@ public DataTable sortjoin(DataTable table_tojoin, ArrayList<String>	 columntable
 		}
 	}
 
-	protected void set_column() {
-
-	}
-
-	protected void set_columns() {
-
-	}
+	protected DataTable row_select(ArrayList<Integer> column_to_select) {
+		ArrayList<Integer> column_to_remove = new ArrayList<Integer>();
+		for(int i=0; i<((ArrayList<Object>) row.get(0)).size(); i++) {
+			column_to_remove.add(i);
+		}
+		for(int i=0; i<column_to_select.size(); i++) {
+			column_to_remove.remove(column_to_select.get(i));
+		}
+        for(int i=0; i<row.size(); i++) {
+            for(int j=column_to_remove.size()-1; j>=0; j--) {
+            	int buffer = column_to_remove.get(j);
+                ((ArrayList<Object>) row.get(i)).remove(buffer);
+            }
+        }
+        return this;
+    }
 
 	// public static void main(String[] args) {
 	/*
