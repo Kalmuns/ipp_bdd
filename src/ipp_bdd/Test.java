@@ -68,7 +68,7 @@ public class Test {
 		ref.add(new ArrayList<Object>(columnDataTable.get_column("P_RETAILPRICE")));
 		columnDataTable.filter(ref, comparators, tocompare);
 		time=System.nanoTime()-time;
-	    System.out.print("time in nanoseconds = "+time);
+	    System.out.print("time in nanoseconds filtertest= "+time);
 		columnDataTable.print(5);
 		
 	}
@@ -101,7 +101,7 @@ public class Test {
 		aggregation.add("avg");
 		columnDataTable.groupBy(column_togroup, column_tokeep, aggregation);
 		time=System.nanoTime()-time;
-	    System.out.print("time in nanoseconds = "+time);
+	    System.out.print("time in nanoseconds grouptest = "+time);
 		columnDataTable.print(5);
 	}
 	
@@ -141,8 +141,7 @@ public class Test {
 		DataTable db2=new DataTable();
 		ColumnNameConstructor columnNameConstructor1=new ColumnNameConstructor("Nation");
 		ColumnNameConstructor columnNameConstructor2=new ColumnNameConstructor("Region");
-		db1.load(path, columnNameConstructor1.getcolmunName(), type_buffer, type_columns);
-		db2.load(path, columnNameConstructor2.getcolmunName(), type_buffer, type_columns);
+		
 		ArrayList<String> columnto_join1 = new ArrayList<String>();
 		ArrayList<String> columnto_join2 = new ArrayList<String>();
 		
@@ -150,9 +149,13 @@ public class Test {
 		columnto_join1.add("N_NAME");
 		columnto_join2.add("R_REGIONKEY");
 		columnto_join2.add("R_NAME");
-	
+		long time=  System.nanoTime();
 		DataTable db3;
+		db1.load(path, columnNameConstructor1.getcolmunName(), type_buffer, type_columns);
+		db2.load(path, columnNameConstructor2.getcolmunName(), type_buffer, type_columns);
 		db3=db1.sortjoin(db2, columnto_join1, columnto_join2,"=" ,false);
+		time=System.nanoTime()-time;
+	    System.out.print("time in nanoseconds JoinTest= "+time);
 		//db3=db2.sortjoin(db1, columnto_join2, columnto_join1,"=" ,false);
 		db3.print(5);
 	}
