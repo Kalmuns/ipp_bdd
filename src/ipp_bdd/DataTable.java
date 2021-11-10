@@ -609,7 +609,7 @@ public class DataTable {
 							.add(table_tojoin.get_column(columntable2.get(i)).get(rightindex));
 				}
 			}
-			if (rightindex+1<righttable_size && ((Year) this.column.get(0)).get(leftindex)<table_tojoin.get_column(0).get(rightindex+1))
+			//if (rightindex+1<righttable_size && ( this.column.get(0).get(leftindex)<table_tojoin.get_column(0).get(rightindex+1))
 			if (leftindex < lefttable_size - 1 && rightindex < righttable_size - 1)
 				if (this.get_column(columntable1.get(0)).get(0) instanceof Integer) {
 					if (((Integer) this.get_column(columntable1.get(0)).get(leftindex)) <= ((Integer) table_tojoin
